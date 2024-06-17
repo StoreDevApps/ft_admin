@@ -1,0 +1,30 @@
+<img src="../../../assets/login/login_background.webp" alt="" class="imagen-login">
+<div class="container-page">
+    <div class="login-card container">
+        <img src="../../../assets/icon_store.png" alt="" class="mb-3 px-7 img-logo w-50">
+        <div class="container-input">
+            <h1 class="text-center">Login</h1>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Correo:</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="email@example.com">
+            </div>
+        
+            <div class="mb-3">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                <input type="password" class="form-control" id="inputPassword">
+                <div class="row">
+                    <div class="col-7">
+                        <a class="text-sm-left text-decoration-none" [routerLink]="['/forgot-password']">Olvidaste tu contraseña?</a>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 text-center">
+                <button class="btn btn-login" [routerLink]="['/inicio']">Iniciar Sesión</button>
+            </div>
+            <div class="mb-3 text-center">
+                <a class="btn" [routerLink]="['/sign-up']">Registrarse</a>
+            </div>
+
+        </div>
+    </div>
+</div>
