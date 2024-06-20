@@ -6,6 +6,10 @@ import { CodeForgotPasswordComponent } from './pages/code-forgot-password/code-f
 import { ChangeForgotPasswordComponent } from './pages/change-forgot-password/change-forgot-password.component';
 import { Error404Component } from './pages/error404/error404.component';
 import { InicioComponent } from './pages/inicio/inicio.component';
+import { HomeComponent } from './pages/home/home.component';
+import { ContactUsComponent } from './pages/contact-us/contact-us.component';
+import { ProductsComponent } from './pages/products/products.component';
+import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.component';
 
 export const routes: Routes = [
   {
@@ -34,14 +38,29 @@ export const routes: Routes = [
     title: 'Change Forgot Password - Store'
   },
   {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
+    path: 'inicio',
+    component: HomeComponent,
+    title: 'Inicio - Store'
   },
   {
-    path: 'inicio',
-    component: InicioComponent,
-    title: 'Inicio - Store'
+    path: 'contactanos',
+    component: ContactUsComponent,
+    title: 'Contáctanos - Store'
+  },
+  {
+    path: 'productos',
+    component: ProductsComponent,
+    title: 'Productos - Store'
+  },
+  {
+    path: 'carrito',
+    component: ShoppingCartComponent,
+    title: 'carrito - Store'
+  },
+  {
+    path: '',
+    redirectTo: 'inicio',
+    pathMatch: 'full',
   },
   {
     path: '**',
