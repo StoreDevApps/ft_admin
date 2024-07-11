@@ -5,13 +5,13 @@
         <div class="container-input">
             <h1 class="text-center">Login</h1>
             <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Correo:</label>
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="email@example.com">
+                <label for="email" class="form-label">Correo:</label>
+                <input type="email" class="form-control" id="email" placeholder="email@example.com" name="email" [(ngModel)]="email" required>
             </div>
         
             <div class="mb-3">
-                <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-                <input type="password" class="form-control" id="inputPassword">
+                <label for="password" class="col-sm-2 col-form-label">Password</label>
+                <input type="password" class="form-control" id="password"  name="password" [(ngModel)]="password" required>
                 <div class="row">
                     <div class="col-7">
                         <a class="text-sm-left text-decoration-none" [routerLink]="['/forgot-password']">Olvidaste tu contraseña?</a>

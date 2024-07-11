@@ -7,7 +7,6 @@ import { ChangeForgotPasswordComponent } from './pages/change-forgot-password/ch
 import { Error404Component } from './pages/error404/error404.component';
 import { InicioComponent } from './pages/inicio/inicio.component';
 import { HomeComponent } from './pages/home/home.component';
-import { ContactUsComponent } from './pages/contact-us/contact-us.component';
 import { ProductsComponent } from './pages/products/products.component';
 import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.component';
 
@@ -41,11 +40,6 @@ export const routes: Routes = [
     path: 'inicio',
     component: HomeComponent,
     title: 'Inicio - Store'
-  },
-  {
-    path: 'contactanos',
-    component: ContactUsComponent,
-    title: 'Contáctanos - Store'
   },
   {
     path: 'productos',
