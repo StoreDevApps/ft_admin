@@ -1,26 +1,42 @@
 <div class="container text-center mt-5">
-    <h2>En construcción</h2>
-    <p>Esta página está en proceso de desarrollo. ¡Pronto estará disponible!</p>
-  </div>
-
-  <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active" data-bs-interval="10000">
-        <div class="d-block w-100 bg-warning"></div>
-      </div>
-      <div class="carousel-item" data-bs-interval="2000">
-        <div class="d-block w-100 bg-warning"></div>
-      </div>
-      <div class="carousel-item">
-        <div class="d-block w-100 bg-warning"></div>
-      </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="/assets/home/home.webp" class="d-block w-100" alt="...">
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
+    <div class="carousel-item">
+      <img src="/assets/home/home.webp" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="/assets/home/home.webp" class="d-block w-100" alt="...">
+    </div>
   </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<div class="contact-outer-container mt-5 mb-5 text-center mx-5">
+  <div class="contact-container">
+    <h1>Contáctanos</h1>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group custom-form-group">
+        <label for="nombre" class="custom-label">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" class="form-control custom-input" required>
+      </div>
+      <div class="form-group custom-form-group">
+        <label for="correo" class="custom-label">Correo:</label>
+        <input type="email" id="correo" name="correo" [(ngModel)]="correo" class="form-control custom-input" required>
+      </div>
+      <div class="form-group custom-form-group">
+        <label for="mensaje" class="custom-label">Mensaje:</label>
+        <textarea id="mensaje" name="mensaje" [(ngModel)]="mensaje" class="form-control custom-textarea" required></textarea>
+      </div>
+      <button type="submit" class="btn custom-button">Enviar</button>
+    </form>
+  </div>
+</div>

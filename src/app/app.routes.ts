@@ -5,6 +5,7 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { CodeForgotPasswordComponent } from './pages/code-forgot-password/code-forgot-password.component';
 import { ChangeForgotPasswordComponent } from './pages/change-forgot-password/change-forgot-password.component';
 import { Error404Component } from './pages/error404/error404.component';
+<<<<<<< HEAD
 import { PublicLayoutComponent } from './pages/public/public-layout/public-layout.component';
 import { PublicHomeComponent } from './pages/public/public-home/public-home.component';
 import { PublicContactUsComponentComponent } from './pages/public/public-contact-us-component/public-contact-us-component.component';
@@ -23,6 +24,12 @@ import { WorkerSalesControlComponent } from './pages/worker/worker-sales-control
 import { WorkerViewInventoryComponent } from './pages/worker/worker-view-inventory/worker-view-inventory.component';
 import { AdminHomeComponent } from './pages/admin/admin-home/admin-home.component';
 import { WorkerHomeComponent } from './pages/worker/worker-home/worker-home.component';
+=======
+import { InicioComponent } from './pages/inicio/inicio.component';
+import { HomeComponent } from './pages/home/home.component';
+import { ProductsComponent } from './pages/products/products.component';
+import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.component';
+>>>>>>> 14d3506fe0a07b7f0ebbc1439832e7ae43761987
 
 export const routes: Routes = [
   {
