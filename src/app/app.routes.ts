@@ -5,11 +5,24 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { CodeForgotPasswordComponent } from './pages/code-forgot-password/code-forgot-password.component';
 import { ChangeForgotPasswordComponent } from './pages/change-forgot-password/change-forgot-password.component';
 import { Error404Component } from './pages/error404/error404.component';
-import { InicioComponent } from './pages/inicio/inicio.component';
-import { HomeComponent } from './pages/home/home.component';
-import { ContactUsComponent } from './pages/contact-us/contact-us.component';
-import { ProductsComponent } from './pages/products/products.component';
-import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.component';
+import { PublicLayoutComponent } from './pages/public/public-layout/public-layout.component';
+import { PublicHomeComponent } from './pages/public/public-home/public-home.component';
+import { PublicContactUsComponentComponent } from './pages/public/public-contact-us-component/public-contact-us-component.component';
+import { PublicProductsComponent } from './pages/public/public-products/public-products.component';
+import { PublicServicesComponent } from './pages/public/public-services/public-services.component';
+import { UserLayoutComponent } from './pages/user/user-layout/user-layout.component';
+import { UserProductsComponent } from './pages/user/user-products/user-products.component';
+import { UserShopppingCartComponent } from './pages/user/user-shoppping-cart/user-shoppping-cart.component';
+import { AdminSalesControlComponent } from './pages/admin/admin-sales-control/admin-sales-control.component';
+import { AdminLayoutComponent } from './pages/admin/admin-layout/admin-layout.component';
+import { AdminSettingsComponent } from './pages/admin/admin-settings/admin-settings.component';
+import { AdminInventoryComponent } from './pages/admin/admin-inventory/admin-inventory.component';
+import { CreateWorkerComponent } from './pages/admin/create-worker/create-worker.component';
+import { WorkerLayoutComponent } from './pages/worker/worker-layout/worker-layout.component';
+import { WorkerSalesControlComponent } from './pages/worker/worker-sales-control/worker-sales-control.component';
+import { WorkerViewInventoryComponent } from './pages/worker/worker-view-inventory/worker-view-inventory.component';
+import { AdminHomeComponent } from './pages/admin/admin-home/admin-home.component';
+import { WorkerHomeComponent } from './pages/worker/worker-home/worker-home.component';
 
 export const routes: Routes = [
   {
@@ -38,33 +51,43 @@ export const routes: Routes = [
     title: 'Change Forgot Password - Store'
   },
   {
-    path: 'inicio',
-    component: HomeComponent,
-    title: 'Inicio - Store'
+    path: '', component: PublicLayoutComponent, children: [
+      { path: 'inicio', component: PublicHomeComponent, title: 'Inicio - Store' },
+      { path: 'productos', component: PublicProductsComponent, title: 'Productos - Store' },
+      { path: 'servicios', component: PublicServicesComponent, title: 'Servicios - Store' },
+      { path: 'contactanos', component: PublicContactUsComponentComponent, title: 'Contáctanos - Store' },
+      { path: '', redirectTo: 'inicio', pathMatch: 'prefix' },
+    ]
   },
   {
-    path: 'contactanos',
-    component: ContactUsComponent,
-    title: 'Contáctanos - Store'
+    path: 'usuario', component: UserLayoutComponent, children: [
+      { path: 'productos', component: UserProductsComponent, title: 'Productos - Store' },
+      { path: 'carrito', component: UserShopppingCartComponent, title: 'carrito - Store' },
+    ]
   },
   {
-    path: 'productos',
-    component: ProductsComponent,
-    title: 'Productos - Store'
+    path: 'admin', component: AdminLayoutComponent, children: [
+      { path : '', component: AdminHomeComponent, title: 'Inicio - Admin',},
+      { path: 'control-ventas', component: AdminSalesControlComponent, title: 'Control de ventas - Admin' },
+      { path: 'inventario', component: AdminInventoryComponent, title: 'Inventario - Admin' },
+      { path: 'crear-trabajador', component: CreateWorkerComponent, title: 'Crear trabajador - Admin' },
+      { path: 'configuracion', component: AdminSettingsComponent, title: 'Configuración - Admin' },
+      { path: '', redirectTo: '', pathMatch: 'prefix' },
+    ]
   },
-  {
-    path: 'carrito',
-    component: ShoppingCartComponent,
-    title: 'carrito - Store'
-  },
-  {
-    path: '',
-    redirectTo: 'inicio',
-    pathMatch: 'full',
+  { 
+    path: 'trabajador', component: WorkerLayoutComponent, children: [
+      { path : '', component: WorkerHomeComponent, title: 'Inicio - Trabajador',},
+      { path: 'control-ventas', component: WorkerSalesControlComponent, title: 'Control de ventas - Trabajador' },
+      { path: 'ver-inventario', component: WorkerViewInventoryComponent, title: 'Ver inventario - Trabajador' },
+    ]
+
   },
   {
     path: '**',
     component: Error404Component,
+    title: 'Error 404 - Store',
+    pathMatch: 'full'
   },
 
 ];

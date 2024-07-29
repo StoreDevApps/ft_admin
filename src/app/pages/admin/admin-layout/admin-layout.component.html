@@ -1,0 +1,25 @@
+<div class="sidebar">
+    <div class="sidebar-logo">
+      <a [routerLink]="['/admin']">
+        <img src="assets/icon_store.png" alt="Logo">
+      </a>
+    </div>
+    <div class="sidebar-user">
+      <p>Juan Perez</p>
+    </div>
+    <nav class="sidebar-menu">
+      <ul>
+        <li><a [routerLink]="['/admin/control-ventas']">Control de ventas</a></li>
+        <li><a [routerLink]="['/admin/inventario']">Inventario</a></li>
+        <li><a [routerLink]="['/admin/crear-trabajador']">Crear trabajador</a></li>
+        <li><a [routerLink]="['/admin/configuracion']">Configuración</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-logout">
+      <button (click)="logout()">Cerrar Sesión</button>
+    </div>
+  </div>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+  
