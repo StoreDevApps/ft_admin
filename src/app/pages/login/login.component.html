@@ -2,29 +2,31 @@
 <div class="container-page">
     <div class="login-card container">
         <img src="../../../assets/icon_store.png" alt="" class="mb-3 px-7 img-logo w-50">
-        <div class="container-input">
-            <h1 class="text-center">Login</h1>
-            <div class="mb-3">
-                <label for="email" class="form-label">Correo:</label>
-                <input type="email" class="form-control" id="email" placeholder="email@example.com" name="email" [(ngModel)]="email" required>
-            </div>
-        
-            <div class="mb-3">
-                <label for="password" class="col-sm-2 col-form-label">Password</label>
-                <input type="password" class="form-control" id="password"  name="password" [(ngModel)]="password" required>
-                <div class="row">
-                    <div class="col-7">
-                        <a class="text-sm-left text-decoration-none" [routerLink]="['/forgot-password']">Olvidaste tu contraseña?</a>
+        <form (ngSubmit)="onSubmit()">
+            <div class="container-input">
+                <h1 class="text-center">Login</h1>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo:</label>
+                    <input type="email" class="form-control" id="email" placeholder="email@example.com" name="email" [(ngModel)]="email" required>
+                </div>
+            
+                <div class="mb-3">
+                    <label for="password" class="col-sm-2 col-form-label">Password</label>
+                    <input type="password" class="form-control" id="password"  name="password" [(ngModel)]="password" required>
+                    <div class="row">
+                        <div class="col-7">
+                            <a class="text-sm-left text-decoration-none" [routerLink]="['/forgot-password']">Olvidaste tu contraseña?</a>
+                        </div>
                     </div>
                 </div>
+                <div class="mb-3 text-center">
+                    <button class="btn btn-login" type="submit">Iniciar Sesión</button>
+                </div>
+                <div class="mb-3 text-center">
+                    <a class="btn" [routerLink]="['/sign-up']">Registrarse</a>
+                </div>
+    
             </div>
-            <div class="mb-3 text-center">
-                <button class="btn btn-login" [routerLink]="['/admin']">Iniciar Sesión</button>
-            </div>
-            <div class="mb-3 text-center">
-                <a class="btn" [routerLink]="['/sign-up']">Registrarse</a>
-            </div>
-
-        </div>
+        </form>
     </div>
 </div>

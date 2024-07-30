@@ -22,6 +22,8 @@ import { WorkerSalesControlComponent } from './pages/worker/worker-sales-control
 import { WorkerViewInventoryComponent } from './pages/worker/worker-view-inventory/worker-view-inventory.component';
 import { AdminHomeComponent } from './pages/admin/admin-home/admin-home.component';
 import { WorkerHomeComponent } from './pages/worker/worker-home/worker-home.component';
+import { authGuard } from './guards/auth.guard';
+import { roleGuard } from './guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -57,13 +59,13 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'usuario', component: UserLayoutComponent, children: [
+    path: 'usuario', component: UserLayoutComponent, canActivate: [authGuard], children: [
       { path: 'productos', component: UserProductsComponent, title: 'Productos - Store' },
       { path: 'carrito', component: UserShopppingCartComponent, title: 'carrito - Store' },
     ]
   },
   {
-    path: 'admin', component: AdminLayoutComponent, children: [
+    path: 'admin', component: AdminLayoutComponent, canActivate: [authGuard, roleGuard], children: [
       { path : '', component: AdminHomeComponent, title: 'Inicio - Admin',},
       { path: 'control-ventas', component: AdminSalesControlComponent, title: 'Control de ventas - Admin' },
       { path: 'inventario', component: AdminInventoryComponent, title: 'Inventario - Admin' },
@@ -73,7 +75,7 @@ export const routes: Routes = [
     ]
   },
   { 
-    path: 'trabajador', component: WorkerLayoutComponent, children: [
+    path: 'trabajador', component: WorkerLayoutComponent, canActivate: [authGuard, roleGuard], children: [
       { path : '', component: WorkerHomeComponent, title: 'Inicio - Trabajador',},
       { path: 'control-ventas', component: WorkerSalesControlComponent, title: 'Control de ventas - Trabajador' },
       { path: 'ver-inventario', component: WorkerViewInventoryComponent, title: 'Ver inventario - Trabajador' },
