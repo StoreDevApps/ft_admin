@@ -1,0 +1,33 @@
+.admin-home-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh; /* Asegura que el contenido esté centrado verticalmente */
+    padding: 20px;
+  }
+  
+  .admin-home-container .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .admin-btn {
+    display: block;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.5rem;
+    background-color: #007bff; /* Color de fondo personalizado */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.3s;
+  }
+  
+  .admin-btn:hover {
+    transform: scale(1.05);
+    background-color: #0056b3; /* Color al pasar el mouse */
+    text-decoration: none;
+  }
+  

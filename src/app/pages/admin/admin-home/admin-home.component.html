@@ -1,1 +1,25 @@
-<p>admin-home works!</p>
+<div class="admin-home-container">
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <a [routerLink]="['/admin/control-ventas']" class="btn btn-lg btn-block admin-btn">
+          Control de Ventas
+        </a>
+      </div>
+      <div class="col-md-4 mb-4">
+        <a [routerLink]="['/admin/inventario']" class="btn btn-lg btn-block admin-btn">
+          Inventario
+        </a>
+      </div>
+      <div class="col-md-4 mb-4">
+        <a [routerLink]="['/admin/crear-trabajador']" class="btn btn-lg btn-block admin-btn">
+          Crear Trabajador
+        </a>
+      </div>
+      <div class="col-md-4 mb-4">
+        <a [routerLink]="['/admin/configuracion']" class="btn btn-lg btn-block admin-btn">
+          Configuración
+        </a>
+      </div>
+    </div>
+  </div>
+  
