@@ -29,7 +29,7 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    title: 'Login - Store'
+    title: 'Login - Store',
   },
   {
     path: 'forgot-password',
@@ -38,55 +38,114 @@ export const routes: Routes = [
   {
     path: 'sign-up',
     component: SignUpComponent,
-    title: 'Sign Up - Store'
+    title: 'Sign Up - Store',
   },
   {
     path: 'code-forgot-password',
     component: CodeForgotPasswordComponent,
-    title: 'Code Forgot Password - Store'
+    title: 'Code Forgot Password - Store',
   },
   {
     path: 'change-forgot-password',
     component: ChangeForgotPasswordComponent,
-    title: 'Change Forgot Password - Store'
+    title: 'Change Forgot Password - Store',
   },
   {
-    path: '', component: PublicLayoutComponent, children: [
-      { path: 'inicio', component: PublicHomeComponent, title: 'Inicio - Store' },
-      { path: 'productos', component: PublicProductsComponent, title: 'Productos - Store' },
-      { path: 'servicios', component: PublicServicesComponent, title: 'Servicios - Store' },
+    path: '',
+    component: PublicLayoutComponent,
+    children: [
+      {
+        path: 'inicio',
+        component: PublicHomeComponent,
+        title: 'Inicio - Store',
+      },
+      {
+        path: 'productos',
+        component: PublicProductsComponent,
+        title: 'Productos - Store',
+      },
+      {
+        path: 'servicios',
+        component: PublicServicesComponent,
+        title: 'Servicios - Store',
+      },
       { path: '', redirectTo: 'inicio', pathMatch: 'prefix' },
-    ]
+    ],
   },
   {
-    path: 'usuario', component: UserLayoutComponent, canActivate: [authGuard], children: [
-      { path: 'productos', component: UserProductsComponent, title: 'Productos - Store' },
-      { path: 'carrito', component: UserShopppingCartComponent, title: 'carrito - Store' },
-    ]
+    path: 'usuario',
+    component: UserLayoutComponent,
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'productos',
+        component: UserProductsComponent,
+        title: 'Productos - Store',
+      },
+      {
+        path: 'carrito',
+        component: UserShopppingCartComponent,
+        title: 'carrito - Store',
+      },
+    ],
   },
   {
-    path: 'admin', component: AdminLayoutComponent, canActivate: [authGuard, roleGuard], children: [
-      { path : '', component: AdminHomeComponent, title: 'Inicio - Admin',},
-      { path: 'control-ventas', component: AdminSalesControlComponent, title: 'Control de ventas - Admin' },
-      { path: 'inventario', component: AdminInventoryComponent, title: 'Inventario - Admin' },
-      { path: 'crear-trabajador', component: CreateWorkerComponent, title: 'Crear trabajador - Admin' },
-      { path: 'configuracion', component: AdminSettingsComponent, title: 'Configuración - Admin' },
+    path: 'admin',
+    component: AdminLayoutComponent,
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['admin'] },
+    children: [
+      { path: '', component: AdminHomeComponent, title: 'Inicio - Admin' },
+      {
+        path: 'control-ventas',
+        component: AdminSalesControlComponent,
+        title: 'Control de ventas - Admin',
+      },
+      {
+        path: 'inventario',
+        component: AdminInventoryComponent,
+        title: 'Inventario - Admin',
+      },
+      {
+        path: 'crear-trabajador',
+        component: CreateWorkerComponent,
+        title: 'Crear trabajador - Admin',
+      },
+      {
+        path: 'configuracion',
+        component: AdminSettingsComponent,
+        title: 'Configuración - Admin',
+      },
       { path: '', redirectTo: '', pathMatch: 'prefix' },
-    ]
+    ],
   },
-  { 
-    path: 'trabajador', component: WorkerLayoutComponent, canActivate: [authGuard, roleGuard], children: [
-      { path : '', component: WorkerHomeComponent, title: 'Inicio - Trabajador',},
-      { path: 'control-ventas', component: WorkerSalesControlComponent, title: 'Control de ventas - Trabajador' },
-      { path: 'ver-inventario', component: WorkerViewInventoryComponent, title: 'Ver inventario - Trabajador' },
-    ]
-
+  {
+    path: 'trabajador',
+    component: WorkerLayoutComponent,
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['admin'] },
+    children: [
+      {
+        path: '',
+        component: WorkerHomeComponent,
+        title: 'Inicio - Trabajador',
+      },
+      {
+        path: 'control-ventas',
+        component: WorkerSalesControlComponent,
+        title: 'Control de ventas - Trabajador',
+      },
+      {
+        path: 'ver-inventario',
+        component: WorkerViewInventoryComponent,
+        title: 'Ver inventario - Trabajador',
+      },
+    ],
   },
   {
     path: '**',
     component: Error404Component,
     title: 'Error 404 - Store',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
-
 ];
