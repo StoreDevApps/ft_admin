@@ -1,0 +1,85 @@
+<div class="container my-5">
+    <!-- Label y Select centrados -->
+    <div class="row justify-content-center mb-4">
+      <div class="col-md-6 text-center">
+        <label for="productCode" class="form-label fs-4">Código del Producto</label>
+        <p-autoComplete 
+          [(ngModel)]="selectedCode" 
+          [suggestions]="filteredCodes" 
+          (completeMethod)="filterCodes($event)" 
+          field="code"
+          [dropdown]="true"
+          [forceSelection]="true"
+          class="form-control form-control-lg"
+          placeholder="Seleccione un código de producto"
+        ></p-autoComplete>
+      </div>
+    </div>
+  
+    <!-- Información del producto -->
+    <div class="row mb-4">
+      <div class="col-md-12 text-center">
+        <h3 class="text-primary">{{ productName }}</h3>
+        <p class="fs-5">Cantidad Total en Inventario: <strong>{{ totalInventory }}</strong></p>
+        <p class="fs-5">Fecha de la Última Compra: <strong>{{ lastPurchaseDate | date }}</strong></p>
+      </div>
+    </div>
+  
+    <!-- Tabla de Proveedores -->
+    <div class="row mb-4">
+      <div class="col-md-12">
+        <h4 class="text-secondary mb-3">Proveedores Recientes</h4>
+        <p-table [value]="recentSuppliers" class="p-datatable-sm p-datatable-gridlines">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Proveedor</th>
+              <th>Costo</th>
+              <th>Fecha de Última Compra</th>
+              <th>Dirección</th>
+              <th>Teléfono</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-supplier>
+            <tr>
+              <td>{{ supplier.name }}</td>
+              <td>{{ supplier.cost | currency }}</td>
+              <td>{{ supplier.lastPurchase | date }}</td>
+              <td>{{ supplier.address }}</td>
+              <td>{{ supplier.phone }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  
+    <!-- Historial de Compras -->
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="text-secondary mb-3">Historial de Compras</h4>
+        <p-table [value]="purchaseHistory" [paginator]="true" [rows]="10" [globalFilterFields]="['supplier', 'cost']" class="p-datatable-sm p-datatable-gridlines">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Proveedor</th>
+              <th>Costo</th>
+              <th>Fecha de Compra</th>
+              <th>Dirección</th>
+              <th>Teléfono</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-history>
+            <tr>
+              <td>{{ history.supplier }}</td>
+              <td>{{ history.cost | currency }}</td>
+              <td>{{ history.purchaseDate | date }}</td>
+              <td>{{ history.address }}</td>
+              <td>{{ history.phone }}</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="globalFilter" let-filter>
+            <input pInputText type="text" (input)="filter($event)" placeholder="Filtrar por proveedor" class="form-control">
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+  

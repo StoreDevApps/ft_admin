@@ -24,6 +24,7 @@ import { AdminHomeComponent } from './pages/admin/admin-home/admin-home.componen
 import { WorkerHomeComponent } from './pages/worker/worker-home/worker-home.component';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
+import { AdminPurchaseControlComponent } from './pages/admin/admin-purchase-control/admin-purchase-control.component';
 
 export const routes: Routes = [
   {
@@ -100,6 +101,11 @@ export const routes: Routes = [
         path: 'control-ventas',
         component: AdminSalesControlComponent,
         title: 'Control de ventas - Admin',
+      },
+      {
+        path: 'control-compras',
+        component: AdminPurchaseControlComponent,
+        title: 'Control de compras - Admin',
       },
       {
         path: 'inventario',
