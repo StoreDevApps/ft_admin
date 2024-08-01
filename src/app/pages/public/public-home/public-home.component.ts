@@ -6,6 +6,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
+import { PublicService } from '../../../services/public/public.service';
 
 @Component({
   selector: 'app-public-home',
@@ -20,16 +21,25 @@ export class PublicHomeComponent {
   mensaje: string = '';
   submitted: boolean = false;
 
-  images = [
-    '/assets/home/home.webp',
-    '/assets/home/home.webp',
-    '/assets/home/home.webp'
-  ];
+  carouselImages: any[] = [];
 
 
   email: any = {}
 
-  constructor(private sendEmailService: SendEmailService) { }
+  constructor(private sendEmailService: SendEmailService, private publicService: PublicService) { }
+
+  ngOnInit(): void {
+    this.publicService.getCarouselImages().subscribe({
+      next: (data) => {
+        if (data.success){
+          this.carouselImages = data.carousel_images;
+        }
+      },
+      error: (error) => {
+        console.error('Error loading carousel images:', error);
+      }
+    })
+  }
 
   onSubmit() {
 

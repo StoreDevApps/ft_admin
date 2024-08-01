@@ -1,8 +1,8 @@
 <div class="container text-center">
   <div id="carouselExampleIndicators" class="carousel slide">
     <div class="carousel-inner">
-      <div class="carousel-item" *ngFor="let image of images; let i = index" [class.active]="i === 0">
-        <img [src]="image" class="d-block w-100" [alt]="'Imagen ' + (i + 1)" />
+      <div class="carousel-item" *ngFor="let image of carouselImages; let i = index" [class.active]="i === 0">
+        <img [src]="image.url" class="d-block w-100" [alt]="'Imagen ' + (i + 1)" />
       </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">

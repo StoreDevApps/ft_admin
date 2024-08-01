@@ -4,11 +4,16 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
+import { PublicService } from '../../../services/public/public.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-admin-settings',
   standalone: true,
-  imports: [TabViewModule, TableModule, ButtonModule, InputTextModule, DialogModule],
+  imports: [TabViewModule, TableModule, ButtonModule, InputTextModule, DialogModule,ConfirmDialogModule, ToastModule],
+  providers: [ MessageService, ConfirmationService],
   templateUrl: './admin-settings.component.html',
   styleUrl: './admin-settings.component.scss'
 })
@@ -17,19 +22,24 @@ export class AdminSettingsComponent {
   images: any[] = [];
   services: any[] = [];
 
+  constructor(private publicService: PublicService, private messageService: MessageService, private confirmationService: ConfirmationService) {}
+
   ngOnInit() {
-    // Inicialización de datos para imágenes y servicios
     this.loadImages();
     this.loadServices();
   }
 
   loadImages() {
-    // Cargar imágenes desde el servidor o base de datos
-    this.images = [
-      { name: 'Image1', url: 'https://example.com/image1.jpg' },
-      { name: 'Image2', url: 'https://example.com/image2.jpg' },
-      // ...
-    ];
+    this.publicService.getCarouselImages().subscribe({
+      next: (data) => {
+        if (data.success){
+          this.images = data.carousel_images;
+        }
+      },
+      error: (error) => {
+        console.error('Error loading carousel images:', error);
+      }
+    })
   }
 
   loadServices() {
@@ -46,15 +56,15 @@ export class AdminSettingsComponent {
   }
 
   deleteImage(image: any) {
-    // Lógica para eliminar una imagen
-  }
-
-  moveImageUp(image: any) {
-    // Lógica para mover una imagen hacia arriba en la lista
-  }
-
-  moveImageDown(image: any) {
-    // Lógica para mover una imagen hacia abajo en la lista
+    this.confirmationService.confirm({
+        message: 'Esta seguro/a de eliminar el producto ' + image.name + '?',
+        header: 'Confirm',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+            this.images = this.images.filter((val) => val.name !== image.name);
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Imagen Eliminada', life: 3000 });
+        }
+    });
   }
 
   addService() {

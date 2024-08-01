@@ -1,4 +1,5 @@
 <div class="container my-5">
+  <p-toast />
     <p-tabView>
       <!-- Tab para Gestionar Imágenes Públicas -->
       <p-tabPanel header="Gestionar Imágenes Públicas">
@@ -17,11 +18,9 @@
               <ng-template pTemplate="body" let-image>
                 <tr>
                   <td>{{ image.name }}</td>
-                  <td><img [src]="image.url" alt="{{ image.name }}" style="width: 100px;"></td>
+                  <td><img [src]="image.url" alt="{{ image.name }}" style="width: 200px;"></td>
                   <td>
                     <button pButton type="button" icon="pi pi-trash" class="p-button-danger" (click)="deleteImage(image)"></button>
-                    <button pButton type="button" icon="pi pi-arrow-up" class="p-button-primary" (click)="moveImageUp(image)"></button>
-                    <button pButton type="button" icon="pi pi-arrow-down" class="p-button-primary" (click)="moveImageDown(image)"></button>
                   </td>
                 </tr>
               </ng-template>
@@ -63,5 +62,7 @@
         </div>
       </p-tabPanel>
     </p-tabView>
+
+    <p-confirmDialog [style]="{ width: '450px' }" />
   </div>
   
