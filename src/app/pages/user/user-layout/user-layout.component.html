@@ -1,1 +1,22 @@
-<p>user-layout works!</p>
+<div>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a [routerLink]="['/usuario']" >Inicio</a>
+            <a [routerLink]="['/usuario/productos']">Productos</a>
+            <a [routerLink]="['/usuario/servicios']">Servicios</a>
+        </div>
+        <div class="navbar-logo">
+            <a [routerLink]="['/usuario']">
+                <img src="assets/icon_store.png" alt="Logo">
+            </a>
+        </div>
+        <div class="navbar-right">
+            <a [routerLink]="['/usuario/carrito']">Carrito</a>
+            <a >Joel Perez</a>
+            <button (click)="logout()" class="btn btn-link">Cerrar Sesión</button>
+        </div>
+    </nav>
+    <div class="content">
+        <router-outlet></router-outlet>
+    </div>
+  </div>

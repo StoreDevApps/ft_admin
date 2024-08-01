@@ -79,15 +79,26 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       {
+        path: '',
+        component: PublicHomeComponent,
+        title: 'Inicio - Store',
+      },
+      {
         path: 'productos',
         component: UserProductsComponent,
         title: 'Productos - Store',
+      },
+      {
+        path: 'servicios',
+        component: PublicServicesComponent,
+        title: 'Servicios - Store',
       },
       {
         path: 'carrito',
         component: UserShopppingCartComponent,
         title: 'carrito - Store',
       },
+      { path: '', redirectTo: '', pathMatch: 'prefix' },
     ],
   },
   {

@@ -20,7 +20,16 @@ export class AuthService {
     // Aquí deberías agregar la lógica para verificar las credenciales del usuario.
     // Por simplicidad, aceptaremos cualquier combinación de username y password.
     this.loggedIn = true;
-    this.userRole = 'admin';  // Puedes establecer el rol del usuario basado en las credenciales.
+    console.log("correo:", username)
+    if(username == "joraazam@espol.edu.ec"){
+      console.log("-----correo:", username)
+      this.userRole = 'admin';  // Puedes establecer el rol del usuario basado en las credenciales.
+    }
+    else{
+      console.log("****correo:", username)
+      this.userRole = 'user';
+    }
+
     return this.loggedIn;
   }
 
