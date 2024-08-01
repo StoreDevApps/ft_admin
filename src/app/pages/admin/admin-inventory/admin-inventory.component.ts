@@ -209,11 +209,12 @@ export class AdminInventoryComponent {
 onUpload(event: any) {
   const file = event.files[0];
   if (file) {
-  const reader = new FileReader();
-  reader.onload = (e: any) => this.producto.image = e.target.result;
-  reader.readAsDataURL(file);
-}
-
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.producto.image = e.target.result; // Asignar la URL base64 al producto.image
+    };
+    reader.readAsDataURL(file); // Leer el archivo como URL de datos
+  }
 }
 
 }

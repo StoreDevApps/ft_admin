@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { SendEmailService } from '../../../services/send-email.service';
 import { validarCorreoElectronico } from '../../../../utils/utils';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-public-home',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, InputTextModule, InputTextareaModule, ButtonModule, CommonModule],
   templateUrl: './public-home.component.html',
   styleUrl: './public-home.component.scss'
 })
@@ -14,13 +18,20 @@ export class PublicHomeComponent {
   nombre: string = '';
   correo: string = '';
   mensaje: string = '';
+  submitted: boolean = false;
+
+  images = [
+    '/assets/home/home.webp',
+    '/assets/home/home.webp',
+    '/assets/home/home.webp'
+  ];
+
 
   email: any = {}
 
   constructor(private sendEmailService: SendEmailService) { }
 
   onSubmit() {
-
 
     if(this.correo.length === 0 || !validarCorreoElectronico(this.correo)){
       alert('El correo no es valido');
@@ -37,6 +48,8 @@ export class PublicHomeComponent {
       return;
     }
 
+    this.submitted = true;
+
     this.email = {
       email: this.correo,
       name: this.nombre,
@@ -49,6 +62,7 @@ export class PublicHomeComponent {
         this.nombre = '';
         this.correo = '';
         this.mensaje = '';
+        this.submitted = false;
       },
       error: (error) => {
         alert('Error al enviar el correo');
