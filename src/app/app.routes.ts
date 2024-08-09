@@ -105,7 +105,7 @@ export const routes: Routes = [
     path: 'admin',
     component: AdminLayoutComponent,
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['admin'] },
+    data: { roles: ['administrador'] },
     children: [
       { path: '', component: AdminHomeComponent, title: 'Inicio - Admin' },
       {
@@ -140,7 +140,7 @@ export const routes: Routes = [
     path: 'trabajador',
     component: WorkerLayoutComponent,
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['admin'] },
+    data: { roles: ['trabajador'] },
     children: [
       {
         path: '',
