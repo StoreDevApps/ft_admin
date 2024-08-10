@@ -11,7 +11,7 @@ export class CodeForgotPasswordService {
 
   sendCode(correo: string) {
     return this.http.post(
-      `${this.base_url}api/administrador/enviarCodigo/`,
+      `${this.base_url}api/enviarCodigo/`,
       { correo },
       { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
     );
@@ -19,7 +19,7 @@ export class CodeForgotPasswordService {
 
   verifyCode(correo: string, codigo: string) {
     return this.http.post(
-      `${this.base_url}api/administrador/verificarCodigo/`,
+      `${this.base_url}api/verificarCodigo/`,
       { correo, codigo },
       { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
     );
