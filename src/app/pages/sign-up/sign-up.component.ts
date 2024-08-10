@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { SignUpService } from '../../services/sign-up.service';
 import { Usuario } from '../../interface/usuario';
 import { LoadingComponent } from '../../componentes/loading/loading.component';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-sign-up',
@@ -45,12 +46,15 @@ export class SignUpComponent {
   submitForm() {
     if(this.validateFields()){
       const usuario: Usuario = {
-        nombre: this.nombre,
-        apellido: this.apellido,
-        correo: this.correo,
-        telefono: this.telefono,
-        idrol: 'administrador'
+        name: this.nombre,
+        last_name: this.apellido,
+        email: this.correo,
+        phone_number: this.telefono,
+        rol: environment.USER_USER, 
+        password: this.password1
       };
+
+      console.log(usuario);
 
       this.loading = true;
       this.signUpService.registrarUsuario(usuario).subscribe({

@@ -8,7 +8,7 @@ import { Usuario } from '../interface/usuario';
 })
 export class SignUpService {
 
-  private apiUrl = `${environment.API_BASE_URL}api/registrarse/`; 
+  private apiUrl = `${environment.API_BASE_URL}api/register/`; 
   
   constructor(private http: HttpClient) {}
 

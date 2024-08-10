@@ -1,10 +1,10 @@
 export interface Usuario {
-    nombre: string;
-    apellido: string;
-    correo: string;
-    telefono: string;
-    idrol: string; 
+    name: string;
+    last_name: string;
+    email: string;
+    phone_number: string;
+    rol: string; 
     is_active?: boolean;
     is_staff?: boolean;
-    contrasena?: string;
+    password?: string;
 }
