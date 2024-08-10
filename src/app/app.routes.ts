@@ -25,6 +25,7 @@ import { WorkerHomeComponent } from './pages/worker/worker-home/worker-home.comp
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 import { AdminPurchaseControlComponent } from './pages/admin/admin-purchase-control/admin-purchase-control.component';
+import { PublicContactUsComponent } from './pages/public/public-contact-us/public-contact-us.component';
 
 export const routes: Routes = [
   {
@@ -70,6 +71,11 @@ export const routes: Routes = [
         component: PublicServicesComponent,
         title: 'Servicios - Store',
       },
+      {
+        path: 'contacto',
+        component: PublicContactUsComponent,
+        title: 'Contacto - Store',
+      },
       { path: '', redirectTo: 'inicio', pathMatch: 'prefix' },
     ],
   },
@@ -92,6 +98,11 @@ export const routes: Routes = [
         path: 'servicios',
         component: PublicServicesComponent,
         title: 'Servicios - Store',
+      },
+      {
+        path: 'contacto',
+        component: PublicContactUsComponent,
+        title: 'Contacto - Store',
       },
       {
         path: 'carrito',
