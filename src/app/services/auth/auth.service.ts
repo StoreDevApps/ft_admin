@@ -76,22 +76,40 @@ export class AuthService {
 
 
 
+  // refreshAccessToken(): Observable<any> {
+  //   const refreshToken = localStorage.getItem('refresh_token');
+  //   if (refreshToken) {
+  //     return this.http.post(`${this.base_url}api/token/refresh/`, { refresh: refreshToken })
+  //       .pipe(
+  //         tap((response: any) => {
+  //           this.accessToken = response.access;
+  //           if (this.accessToken) {
+  //             localStorage.setItem('access_token', this.accessToken);
+  //           }
+  //         })
+  //       );
+  //   }
+  //   return new Observable(observer => {
+  //     observer.error('No refresh token found');
+  //   });
+  // }
+
   refreshAccessToken(): Observable<any> {
     const refreshToken = localStorage.getItem('refresh_token');
+    
     if (refreshToken) {
-      return this.http.post(`${this.base_url}api/token/refresh/`, { refresh: refreshToken })
-        .pipe(
-          tap((response: any) => {
-            this.accessToken = response.access;
-            if (this.accessToken) {
-              localStorage.setItem('access_token', this.accessToken);
-            }
-          })
-        );
+      return this.http.post<any>(`${this.base_url}api/token/refresh/`, { refresh: refreshToken }).pipe(
+        tap(response => {
+          if (response.refresh) {
+            localStorage.setItem('access_token', response.access);
+            localStorage.setItem('refresh_token', response.refresh);
+          }
+        })
+      );
+    } else {
+      this.logout();
+      throw new Error('No refresh token available');
     }
-    return new Observable(observer => {
-      observer.error('No refresh token found');
-    });
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
