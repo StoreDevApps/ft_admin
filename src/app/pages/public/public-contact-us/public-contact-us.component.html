@@ -1,21 +1,53 @@
-<div class="contact-outer-container mt-5 mb-5 text-center mx-5">
-    <div class="contact-container">
-      <h1>Contáctanos</h1>
-      <form (ngSubmit)="onSubmit()">
-        <div class="form-group custom-form-group">
-          <label for="nombre" class="custom-label">Nombre:</label>
-          <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" class="form-control custom-input" required>
+<div class="p-grid p-nogutter contact-page">
+  <div class="p-col-12 p-md-6">
+    <div class="contact-form">
+      <h3>Contáctanos</h3>
+      <h4>Estamos aquí para ayudarte en lo que necesites!</h4>
+      <div class="p-fluid">
+        <div class="p-field">
+          <label for="name">Nombre *</label>
+          <input pInputText id="name" type="text" />
         </div>
-        <div class="form-group custom-form-group">
-          <label for="correo" class="custom-label">Correo:</label>
-          <input type="email" id="correo" name="correo" [(ngModel)]="correo" class="form-control custom-input" required>
+        <div class="p-field">
+          <label for="email">Correo *</label>
+          <input pInputText id="email" type="email" />
         </div>
-        <div class="form-group custom-form-group">
-          <label for="mensaje" class="custom-label">Mensaje:</label>
-          <textarea id="mensaje" name="mensaje" [(ngModel)]="mensaje" class="form-control custom-textarea" required></textarea>
+        <div class="p-field">
+          <label for="phone">Numero de telefono *</label>
+          <input pInputText id="phone" type="text" />
         </div>
-        <button type="submit" class="btn custom-button">Enviar</button>
-      </form>
+        <div class="p-field">
+          <label for="message">Mensaje</label>
+          <textarea pInputTextarea id="message" rows="5"></textarea>
+        </div>
+        <div class="p-field-checkbox">
+          <p-checkbox inputId="consent"></p-checkbox>
+          <label for="consent">Autorizo a este sitio web a almacenar mi información para que puedan responder a mi consulta. *</label>
+        </div>
+        <button pButton type="submit" label="Enviar" class="p-button-raised p-button-danger"></button>
+      </div>
     </div>
   </div>
-  
+  <div class="p-col-12 p-md-6">
+    <div class="map-container">
+      <div class="map-placeholder">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3986.9530140284014!2d-79.89217012520736!3d-2.171563797809155!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x902d6dc7169edb43%3A0x53d17cb198ecf379!2sComandato!5e0!3m2!1ses-419!2sec!4v1723335048865!5m2!1ses-419!2sec" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <div class="contact-info">
+        <h3>Visítanos</h3>
+        <p><i class="pi pi-envelope"></i> jaaronzambranach&#64;outlook.es</p>
+        <p><i class="pi pi-map-marker"></i> Dirección: Guayaquil, G EC</p>
+        <h4>Horas</h4>
+        <ul class="hours">
+          <li><strong>Lunes</strong> <span>9:00am – 10:00pm</span></li>
+          <li><strong>Martes</strong> <span>9:00am – 10:00pm</span></li>
+          <li><strong>Miércoles</strong> <span>9:00am – 10:00pm</span></li>
+          <li><strong>Jueves</strong> <span>9:00am – 10:00pm</span></li>
+          <li><strong>Viernes</strong> <span>9:00am – 10:00pm</span></li>
+          <li><strong>Sábado</strong> <span>9:00am – 6:00pm</span></li>
+          <li><strong>Domingo</strong> <span>9:00am – 12:00pm</span></li>
+        </ul>        
+      </div>
+    </div>
+  </div>
+</div>

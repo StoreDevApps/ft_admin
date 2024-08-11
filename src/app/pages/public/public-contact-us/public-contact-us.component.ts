@@ -6,11 +6,13 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { SendEmailService } from '../../../services/send-email.service';
+import { MessageModule } from 'primeng/message';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-public-contact-us',
   standalone: true,
-  imports: [FormsModule, InputTextModule, InputTextareaModule, ButtonModule, CommonModule],
+  imports: [FormsModule, InputTextModule, InputTextareaModule, ButtonModule, CommonModule, MessageModule, CheckboxModule],
   templateUrl: './public-contact-us.component.html',
   styleUrl: './public-contact-us.component.scss'
 })
