@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TabViewModule } from 'primeng/tabview';
 
 @Component({
   selector: 'app-create-worker',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, TabViewModule],
   templateUrl: './create-worker.component.html',
   styleUrl: './create-worker.component.scss'
 })
