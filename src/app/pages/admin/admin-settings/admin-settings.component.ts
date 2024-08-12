@@ -89,7 +89,7 @@ export class AdminSettingsComponent {
   deleteImage(image: any) {
     this.confirmationService.confirm({
       message: 'Esta seguro/a de eliminar el producto ' + image.name + '?',
-      header: 'Confirm',
+      header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.adminservice.deleteImage(image).subscribe({
@@ -220,22 +220,29 @@ export class AdminSettingsComponent {
   }
 
   deleteService(service: any) {
-    this.adminservice.deleteAdminService(service).subscribe({
-      next: (data) => {
-        if (data.success) {
-          this.loadServices();
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Successful',
-            detail: 'Servicio Eliminado',
-            life: 3000,
-          });
-        }
+    this.confirmationService.confirm({
+      message: 'Esta seguro/a de eliminar el servicio ' + service.name + '?',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.adminservice.deleteAdminService(service).subscribe({
+          next: (data) => {
+            if (data.success) {
+              this.loadServices();
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Successful',
+                detail: 'Servicio Eliminado',
+                life: 3000,
+              });
+            }
+          },
+          error: (error) => {
+            console.error('Error deleting service:', error);
+          },
+        });
       },
-      error: (error) => {
-        console.error('Error deleting service:', error);
-      },
-    })
+    });
   }
 
   uploadNewService() {
@@ -302,41 +309,44 @@ export class AdminSettingsComponent {
   }
 
   sendNewService() {
-    if(this.updateService){
-      this.adminservice.putAdminServices(this.newService, this.newImageService).subscribe({
-        next: (data) => {
-          if (data.success) {
-            this.closeNewServiceDialog();
-            this.loadServices();
-            this.messageService.add({
-              severity: 'success',
-              summary: data.message,
-              detail: '',
-            });
-          }
-        },
-        error: (error) => {
-          console.error('Error loading services:', error);
-        },
-      });
-    }
-    else{
-      this.adminservice.postAdminServices(this.newService, this.newImageService).subscribe({
-        next: (data) => {
-          if (data.success) {
-            this.closeNewServiceDialog();
-            this.loadServices();
-            this.messageService.add({
-              severity: 'success',
-              summary: data.message,
-              detail: '',
-            });
-          }
-        },
-        error: (error) => {
-          console.error('Error loading services:', error);
-        },
-      });
+    if (this.updateService) {
+      this.adminservice
+        .putAdminServices(this.newService, this.newImageService)
+        .subscribe({
+          next: (data) => {
+            if (data.success) {
+              this.closeNewServiceDialog();
+              this.loadServices();
+              this.messageService.add({
+                severity: 'success',
+                summary: data.message,
+                detail: '',
+              });
+            }
+          },
+          error: (error) => {
+            console.error('Error loading services:', error);
+          },
+        });
+    } else {
+      this.adminservice
+        .postAdminServices(this.newService, this.newImageService)
+        .subscribe({
+          next: (data) => {
+            if (data.success) {
+              this.closeNewServiceDialog();
+              this.loadServices();
+              this.messageService.add({
+                severity: 'success',
+                summary: data.message,
+                detail: '',
+              });
+            }
+          },
+          error: (error) => {
+            console.error('Error loading services:', error);
+          },
+        });
     }
   }
 }

@@ -135,7 +135,7 @@ export const routes: Routes = [
         title: 'Inventario - Admin',
       },
       {
-        path: 'crear-trabajador',
+        path: 'trabajadores',
         component: CreateWorkerComponent,
         title: 'Crear trabajador - Admin',
       },

@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink, FormsModule],
-
+  imports: [RouterLink, FormsModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -14,7 +16,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router,     private messageService: MessageService, ) {}
 
   onSubmit() {
 
@@ -31,6 +33,12 @@ export class LoginComponent {
       },
       error: (error) => {
         console.error('Error de login:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error de inicio de sesión, revisar credenciales e intente nuevamente',
+          detail: '',
+        });
+        this.password = '';
       },
     });
   }

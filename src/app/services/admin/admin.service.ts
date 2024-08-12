@@ -69,8 +69,6 @@ export class AdminService {
       uniqueNameWithExtension: uniqueName,
     };
 
-    console.log(service);
-    console.log(image);
     const formData = new FormData();
     formData.append('service', JSON.stringify(service));
     formData.append('fileData', JSON.stringify(fileData));
