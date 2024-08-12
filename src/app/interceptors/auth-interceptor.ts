@@ -9,8 +9,6 @@ export function authInterceptorFn(req: HttpRequest<unknown>, next: HttpHandlerFn
   const accessToken = localStorage.getItem('access_token');
   let clonedRequest = req;
 
-  console.log("accessToken: ", accessToken);
-
   if (accessToken) {
     clonedRequest = req.clone({
       headers: req.headers.set('Authorization', `Bearer ${accessToken}`)

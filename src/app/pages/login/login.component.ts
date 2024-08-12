@@ -17,21 +17,15 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
-    console.log(this.email, this.password);
 
     this.authService.login(this.email, this.password).subscribe({
       next: () => {
-        console.log('Login correcto');
         const userRole = this.authService.getUserRole();
-        console.log(userRole);
         if (userRole === 'administrador') {
-          console.log('Login correcto admin');
           this.router.navigate(['/admin']);
         } else if (userRole === 'trabajador') {
-          console.log('Login correcto trabajador');
           this.router.navigate(['/trabajador']);
         } else {
-          console.log('Login correcto usuario');
           this.router.navigate(['/usuario']);
         }
       },

@@ -11,6 +11,13 @@ import { ToastModule } from 'primeng/toast';
 import { FileUploadModule } from 'primeng/fileupload';
 import { CommonModule } from '@angular/common';
 import { AdminService } from '../../../services/admin/admin.service';
+import { FormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown';
+
+interface CategoryService {
+  name: string;
+  code: number;
+}
 
 @Component({
   selector: 'app-admin-settings',
@@ -24,7 +31,9 @@ import { AdminService } from '../../../services/admin/admin.service';
     ConfirmDialogModule,
     ToastModule,
     FileUploadModule,
-    CommonModule
+    DropdownModule,
+    CommonModule,
+    FormsModule,
   ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './admin-settings.component.html',
@@ -33,9 +42,18 @@ import { AdminService } from '../../../services/admin/admin.service';
 export class AdminSettingsComponent {
   images: any[] = [];
   services: any[] = [];
+  categoriesServices: CategoryService[] = [];
+
   newImages: File[] = [];
+  newService: any = {};
+  newImageService: File = {} as File;
+  tempImageService: File = {} as File;
 
   newImageDialog: boolean = false;
+  newServiceDialog: boolean = false;
+  newCategoryServiceDialog: boolean = false;
+  submitNewService: boolean = false;
+  updateService: boolean = false;
 
   constructor(
     private publicService: PublicService,
@@ -63,25 +81,6 @@ export class AdminSettingsComponent {
     });
   }
 
-  loadServices() {
-    // Cargar servicios desde el servidor o base de datos
-    this.services = [
-      {
-        name: 'Service1',
-        category: 'Category1',
-        image: 'https://example.com/service1.jpg',
-        description: 'Description of Service1',
-      },
-      {
-        name: 'Service2',
-        category: 'Category2',
-        image: 'https://example.com/service2.jpg',
-        description: 'Description of Service2',
-      },
-      // ...
-    ];
-  }
-
   addImages(event: any) {
     this.newImages = [];
     this.newImages.push(...event.files);
@@ -93,12 +92,16 @@ export class AdminSettingsComponent {
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        
         this.adminservice.deleteImage(image).subscribe({
           next: (data) => {
             if (data.success) {
               this.loadImages();
-              this.messageService.add({severity: 'success', summary: 'Successful', detail: 'Imagen Eliminada', life: 3000});
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Successful',
+                detail: 'Imagen Eliminada',
+                life: 3000,
+              });
             }
           },
           error: (error) => {
@@ -107,18 +110,6 @@ export class AdminSettingsComponent {
         });
       },
     });
-  }
-
-  addService() {
-    // Lógica para añadir un nuevo servicio
-  }
-
-  editService(service: any) {
-    // Lógica para editar un servicio existente
-  }
-
-  deleteService(service: any) {
-    // Lógica para eliminar un servicio
   }
 
   openNewImageDialog() {
@@ -137,22 +128,206 @@ export class AdminSettingsComponent {
           if (data.success) {
             this.loadImages();
             this.closeNewImageDialog();
-            this.messageService.add({severity: 'info', summary: data.message, detail: ''});
+            this.messageService.add({
+              severity: 'info',
+              summary: data.message,
+              detail: '',
+            });
           }
         },
         error: (error) => {
-          this.messageService.add({severity: 'error', summary: error.message, detail: ''});
+          this.messageService.add({
+            severity: 'error',
+            summary: error.message,
+            detail: '',
+          });
           console.error('Error al cargar las imagenes:', error);
         },
-      })
+      });
     } else {
-      this.messageService.add({severity: 'error', summary: 'No hay ninguna imagen seleccionada', detail: ''});
+      this.messageService.add({
+        severity: 'error',
+        summary: 'No hay ninguna imagen seleccionada',
+        detail: '',
+      });
       console.error('No hay ninguna imagen seleccionada');
     }
   }
 
   removeImage(event: any) {
     console.log(event.file);
-    this.newImages = this.newImages.filter(file => file.name !== event.file.name);
+    this.newImages = this.newImages.filter(
+      (file) => file.name !== event.file.name
+    );
+  }
+
+  loadServices() {
+    // Cargar servicios desde el servidor o base de datos
+    this.services = [];
+
+    this.adminservice.getAdminServices().subscribe({
+      next: (data) => {
+        if (data.success) {
+          this.services = data.services;
+          this.adminservice.getAdminCategoriesServices().subscribe({
+            next: (data) => {
+              if (data.success) {
+                this.categoriesServices = data.categories;
+              }
+            },
+            error: (error) => {
+              console.error('Error loading services:', error);
+            },
+          });
+        }
+      },
+      error: (error) => {
+        console.error('Error loading services:', error);
+      },
+    });
+  }
+
+  openNewServiceDialog() {
+    this.newServiceDialog = true;
+  }
+
+  closeNewServiceDialog() {
+    this.newServiceDialog = false;
+    this.newImageService = {} as File;
+    this.tempImageService = {} as File;
+    this.newService = {};
+    this.submitNewService = false;
+    this.updateService = false;
+  }
+
+  addService(event: any) {
+    this.tempImageService =
+      event.currentFiles[0].objectURL['changingThisBreaksApplicationSecurity'];
+    this.newImageService = event.currentFiles[0];
+  }
+
+  editService(service: any) {
+    this.openNewServiceDialog();
+    this.newService = service;
+    this.tempImageService = service.image;
+    this.newImageService = service.image;
+    this.updateService = true;
+  }
+
+  removeImageService(event: any) {
+    this.newImageService = {} as File;
+    this.tempImageService = this.newService.image;
+  }
+
+  deleteService(service: any) {
+    // Lógica para eliminar un servicio
+  }
+
+  uploadNewService() {
+    this.submitNewService = true;
+
+    if (!this.validarDatosModalService()) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Faltan campos por rellenar',
+        detail: '',
+      });
+      return;
+    }
+
+    if (
+      this.categoriesServices.filter((c) => c.name === this.newService.category)
+        .length < 1
+    ) {
+      console.log('Categoría no existe');
+      console.log(this.newService.category);
+      this.adminservice
+        .postAdminCategoriesServices(this.newService.category)
+        .subscribe({
+          next: (data) => {
+            if (data.success) {
+              console.log(data);
+              this.closeNewServiceDialog();
+              this.sendNewService();
+              return;
+            }
+          },
+          error: (error) => {
+            console.error('Error loading services:', error);
+            this.messageService.add({
+              severity: 'error',
+              summary: error.message,
+              detail: '',
+            });
+          },
+        });
+    } else {
+      this.sendNewService();
+    }
+    console.log(this.newService);
+    console.log(this.newImageService);
+  }
+
+  validarDatosModalService() {
+    let update = true;
+    if (!this.newService.name) {
+      update = false;
+    }
+    if (!this.newService.category) {
+      update = false;
+    }
+    if (!this.newService.description) {
+      update = false;
+    }
+    console.log(this.newImageService);
+    console.log(this.tempImageService);
+    console.log(this.newService.image);
+    if (
+      !this.newImageService.size &&
+      !(typeof this.newImageService === 'string')
+    ) {
+      update = false;
+    }
+
+    return update;
+  }
+
+  sendNewService() {
+    if(this.updateService){
+      this.adminservice.putAdminServices(this.newService, this.newImageService).subscribe({
+        next: (data) => {
+          if (data.success) {
+            this.closeNewServiceDialog();
+            this.loadServices();
+            this.messageService.add({
+              severity: 'success',
+              summary: data.message,
+              detail: '',
+            });
+          }
+        },
+        error: (error) => {
+          console.error('Error loading services:', error);
+        },
+      });
+    }
+    else{
+      this.adminservice.postAdminServices(this.newService, this.newImageService).subscribe({
+        next: (data) => {
+          if (data.success) {
+            this.closeNewServiceDialog();
+            this.loadServices();
+            this.messageService.add({
+              severity: 'success',
+              summary: data.message,
+              detail: '',
+            });
+          }
+        },
+        error: (error) => {
+          console.error('Error loading services:', error);
+        },
+      });
+    }
   }
 }

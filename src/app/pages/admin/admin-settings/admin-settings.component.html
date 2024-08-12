@@ -64,7 +64,7 @@
             label="Añadir Servicio"
             icon="pi pi-plus"
             class="mb-3"
-            (click)="addService()"
+            (click)="openNewServiceDialog()"
           ></button>
           <p-table
             [value]="services"
@@ -152,6 +152,101 @@
         icon="pi pi-check"
         [text]="true"
         (onClick)="uploadNewImages()"
+      />
+    </ng-template>
+  </p-dialog>
+
+  <p-dialog
+    [(visible)]="newServiceDialog"
+    [style]="{ width: '450px' }"
+    header="Product Details"
+    [modal]="true"
+    styleClass="p-fluid"
+    (onHide)="closeNewServiceDialog()"
+  >
+    <ng-template pTemplate="content">
+      <img
+        [src]="tempImageService || newService.image"
+        [alt]="newService.name"
+        class="block m-auto pb-3"
+        *ngIf="newService.image"
+      />
+      <p-fileUpload
+        [multiple]="false"
+        accept="image/*"
+        maxFileSize="5000000"
+        chooseLabel="Subir Imagen"
+        class="w-full"
+        name="image"
+        [showUploadButton]="false"
+        [showCancelButton]="false"
+        [customUpload]="true"
+        (onSelect)="addService($event)"
+        [files]="newImages"
+        (onRemove)="removeImageService($event)"
+      >
+      </p-fileUpload>
+      <div class="field mb-3 mt-3">
+        <label for="codigo">Nombre del Servicio</label>
+        <input
+          type="text"
+          pInputText
+          id="codigo"
+          [(ngModel)]="newService.name"
+          required
+          autofocus
+        />
+        <small class="p-error" *ngIf="submitNewService && !newService.name">
+          Nombre del servicio es requerido
+        </small>
+      </div>
+
+      <div class="field mb-3">
+        <label for="codigo">Categoria</label>
+        <p-dropdown
+          [options]="categoriesServices"
+          [(ngModel)]="newService.category"
+          optionLabel="name"
+          placeholder="Seleccione una categoria"
+          optionValue="name"
+          [editable]="true"
+          required
+        />
+        <small class="p-error" *ngIf="submitNewService && !newService.category">
+          Categoria es requerida
+        </small>
+      </div>
+
+      <div class="field mb-3">
+        <label for="description">Descripción</label>
+        <input
+          type="text"
+          pInputText
+          id="description"
+          [(ngModel)]="newService.description"
+          required
+        />
+        <small
+          class="p-error"
+          *ngIf="submitNewService && !newService.description"
+        >
+          Nombre del servicio es requerido
+        </small>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <p-button
+        label="Cancel"
+        icon="pi pi-times"
+        [text]="true"
+        (onClick)="closeNewServiceDialog()"
+      />
+      <p-button
+        label="Save"
+        icon="pi pi-check"
+        [text]="true"
+        (onClick)="uploadNewService()"
       />
     </ng-template>
   </p-dialog>

@@ -73,27 +73,7 @@ export class AuthService {
     }
     return null;
   }
-
-
-
-  // refreshAccessToken(): Observable<any> {
-  //   const refreshToken = localStorage.getItem('refresh_token');
-  //   if (refreshToken) {
-  //     return this.http.post(`${this.base_url}api/token/refresh/`, { refresh: refreshToken })
-  //       .pipe(
-  //         tap((response: any) => {
-  //           this.accessToken = response.access;
-  //           if (this.accessToken) {
-  //             localStorage.setItem('access_token', this.accessToken);
-  //           }
-  //         })
-  //       );
-  //   }
-  //   return new Observable(observer => {
-  //     observer.error('No refresh token found');
-  //   });
-  // }
-
+  
   refreshAccessToken(): Observable<any> {
     const refreshToken = localStorage.getItem('refresh_token');
     
