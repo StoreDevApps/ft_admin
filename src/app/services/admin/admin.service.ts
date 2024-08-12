@@ -79,27 +79,33 @@ export class AdminService {
   }
 
   putAdminServices(service: any, image: File): Observable<any> {
-    console.log(service);
-    console.log(image);
 
-    const fileNameParts = image.name.split('.');
-    const fileExtension = fileNameParts.pop();
-    const fileNameWithoutExtension = fileNameParts.join('.');
-    const uniqueName = `${fileNameWithoutExtension}-${Date.now()}.${fileExtension}`;
-
-    const fileData = {
-      name: fileNameWithoutExtension,
-      uniqueNameWithExtension: uniqueName,
-    };
-
-    console.log(fileData);
     const formData = new FormData();
+
+    if (typeof image !== 'string') {
+      const fileNameParts = image.name.split('.');
+      const fileExtension = fileNameParts.pop();
+      const fileNameWithoutExtension = fileNameParts.join('.');
+      const uniqueName = `${fileNameWithoutExtension}-${Date.now()}.${fileExtension}`;
+  
+      const fileData = {
+        name: fileNameWithoutExtension,
+        uniqueNameWithExtension: uniqueName,
+      };
+      formData.append('fileData', JSON.stringify(fileData));
+      formData.append('image', image);
+    }
+
     formData.append('service', JSON.stringify(service));
-    formData.append('fileData', JSON.stringify(fileData));
-    formData.append('image', image);
     return this.http.put<any>(
-      `${this.base_url}api/admin/services/${service.id}/`,
+      `${this.base_url}api/admin/service/${service.id}/`,
       formData,
+    );
+  }
+
+  deleteAdminService(service: any): Observable<any> {
+    return this.http.delete<any>(
+      `${this.base_url}api/admin/service/${service.id}/`
     );
   }
 }

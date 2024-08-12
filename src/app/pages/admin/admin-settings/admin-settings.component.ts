@@ -220,7 +220,22 @@ export class AdminSettingsComponent {
   }
 
   deleteService(service: any) {
-    // Lógica para eliminar un servicio
+    this.adminservice.deleteAdminService(service).subscribe({
+      next: (data) => {
+        if (data.success) {
+          this.loadServices();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'Servicio Eliminado',
+            life: 3000,
+          });
+        }
+      },
+      error: (error) => {
+        console.error('Error deleting service:', error);
+      },
+    })
   }
 
   uploadNewService() {
@@ -249,7 +264,6 @@ export class AdminSettingsComponent {
               console.log(data);
               this.closeNewServiceDialog();
               this.sendNewService();
-              return;
             }
           },
           error: (error) => {
@@ -264,8 +278,6 @@ export class AdminSettingsComponent {
     } else {
       this.sendNewService();
     }
-    console.log(this.newService);
-    console.log(this.newImageService);
   }
 
   validarDatosModalService() {
@@ -279,12 +291,9 @@ export class AdminSettingsComponent {
     if (!this.newService.description) {
       update = false;
     }
-    console.log(this.newImageService);
-    console.log(this.tempImageService);
-    console.log(this.newService.image);
     if (
       !this.newImageService.size &&
-      !(typeof this.newImageService === 'string')
+      typeof this.newImageService !== 'string'
     ) {
       update = false;
     }

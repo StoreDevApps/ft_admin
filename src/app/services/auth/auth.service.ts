@@ -65,10 +65,8 @@ export class AuthService {
    */
   getUserRole(): string | null {
     const token = localStorage.getItem('access_token');
-    console.log(token);
     if (token) {
       const decoded: any = jwtDecode(token);
-      console.log(decoded);
       return decoded.role;
     }
     return null;
