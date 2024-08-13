@@ -8,7 +8,7 @@ import { Categoria } from '../../../models/Categoria';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { CheckboxModule } from 'primeng/checkbox'; // Importa el módulo de Checkbox
-import { RadioButtonModule } from 'primeng/radiobutton'; 
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield'; // Importa el módulo de IconField
 import { InputTextModule } from 'primeng/inputtext'; // Importa el módulo de InputText
@@ -17,13 +17,12 @@ import { InputTextModule } from 'primeng/inputtext'; // Importa el módulo de In
 @Component({
   selector: 'app-user-products',
   standalone: true,
-  imports: [CommonModule, FormsModule, ToastModule,CheckboxModule, RadioButtonModule, DropdownModule, InputTextModule,IconFieldModule], 
+  imports: [CommonModule, FormsModule, ToastModule, CheckboxModule, RadioButtonModule, DropdownModule, InputTextModule, IconFieldModule],
   templateUrl: './user-products.component.html',
   styleUrls: ['./user-products.component.scss'],
   providers: [MessageService]
 })
 export class UserProductsComponent implements OnInit {
-
   categories: Categoria[] = [];
   selectedCategories: { [key: string]: boolean } = {};
   selectedCategoryIds: number[] = []; // Para gestionar las categorías seleccionadas
@@ -33,7 +32,7 @@ export class UserProductsComponent implements OnInit {
 
   sortOptions: any[] = []; // Para almacenar las opciones de ordenamiento
   selectedSortOption: any; // Para almacenar la opción seleccionada
-  
+
   searchQuery: string = '';
 
   constructor(
@@ -41,17 +40,17 @@ export class UserProductsComponent implements OnInit {
     private router: Router,
     private clienteService: ClienteService,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (!this.authService.isAuthenticated()) {
       this.router.navigate(['/productos']);
     }
     this.loadCategories();
-    this.loadOptions();  
+    this.loadOptions();
   }
 
-  loadOptions(): void{
+  loadOptions(): void {
     this.sortOptions = [
       { label: 'Por precio de mayor a menor', value: 'price-desc' },
       { label: 'Por precio de menor a mayor', value: 'price-asc' },
@@ -122,23 +121,27 @@ export class UserProductsComponent implements OnInit {
     this.buscarPorCategoria();
   }
 
-  buscarMenoresDolar(): void {    
+  buscarMenoresDolar(): void {
     this.messageService.add({ severity: 'success', summary: 'Busqueda realizada', detail: 'Búsqueda de productos menores a $1 completada', life: 3000 });
   }
 
-  buscarPorRangoPrecio(): void {    
+  buscarPorRangoPrecio(): void {
     this.messageService.add({ severity: 'success', summary: 'Busqueda realizada', detail: 'Búsqueda por rango de precio completada', life: 3000 });
   }
 
-  buscarPorCategoria(): void {    
+  buscarPorCategoria(): void {
     this.messageService.add({ severity: 'info', summary: 'Busqueda realizada', detail: 'Búsqueda por categorías completada', life: 3000 });
   }
-  
-  handleSearch(): void {    
-    console.log("Buscar: ", this.searchQuery);    
+
+  handleSearch(): void {
+    console.log("Buscar: ", this.searchQuery);
   }
 
   onSortChange(event: any): void {
-    const value = event.value;    
+    const value = event.value;
+  }
+
+  clearFilters() {
+    throw new Error('Method not implemented.');
   }
 }
