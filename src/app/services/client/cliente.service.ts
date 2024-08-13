@@ -10,10 +10,16 @@ import { Categoria } from '../../models/Categoria';
 })
 export class ClienteService {
 
-  private apiUrl = environment.API_BASE_URL+'api';
-  constructor(private http: HttpClient) {}  
+  private apiUrl = environment.API_BASE_URL + 'api';
+  constructor(private http: HttpClient) { }
 
   getProductCategories(): Observable<{ success: boolean; product_categories: Categoria[] }> {
     return this.http.get<{ success: boolean; product_categories: Categoria[] }>(`${this.apiUrl}/product-categories/`);
+  }
+
+  getProducts(page: number, pageSize: number): Observable<{ success: boolean; products: any[], total_pages: number }> {
+    return this.http.get<{ success: boolean; products: any[], total_pages: number }>(
+      `${this.apiUrl}/products-pagination/?page=${page}&page_size=${pageSize}`
+    );
   }
 }

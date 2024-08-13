@@ -35,6 +35,12 @@ export class UserProductsComponent implements OnInit {
 
   searchQuery: string = '';
 
+  products: any[] = [];
+  totalPages: number = 0;
+  currentPage: number = 1;
+  pageSize: number = 10;
+  pages: number[] = [];
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -48,6 +54,7 @@ export class UserProductsComponent implements OnInit {
     }
     this.loadCategories();
     this.loadOptions();
+    this.loadPage(1);
   }
 
   loadOptions(): void {
@@ -71,6 +78,21 @@ export class UserProductsComponent implements OnInit {
     });
   }
 
+  loadPage(page: number): void {
+    this.clienteService.getProducts(page, this.pageSize).subscribe((response) => {
+      if (response.success) {
+        this.products = response.products;
+        this.totalPages = response.total_pages;
+        this.currentPage = page;
+        this.pages = Array.from({length: this.totalPages}, (_, i) => i + 1);
+      } else {
+        console.error('Error al cargar los productos');
+      }
+    }, error => {
+      console.error('Error en la solicitud:', error);
+    });
+  }
+  
   validateNumberInput(event: KeyboardEvent): void {
     const input = event.key;
     const currentValue = (event.target as HTMLInputElement).value;
@@ -141,7 +163,21 @@ export class UserProductsComponent implements OnInit {
     const value = event.value;
   }
 
-  clearFilters() {
-    throw new Error('Method not implemented.');
+  clearFilters(): void {    
+    this.selectedCategories = {};
+    this.selectedCategoryIds = [];
+      
+    this.minPrice = '';
+    this.maxPrice = '';
+    this.priceOption = '';
+      
+    this.selectedSortOption = null;
+    this.searchQuery = '';
+      
+    this.messageService.add({ severity: 'success', summary: 'Filtros borrados', detail: 'Todos los filtros han sido borrados', life: 3000 });
+      
+    this.buscarPorCategoria();
   }
+
+  
 }

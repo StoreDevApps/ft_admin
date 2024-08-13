@@ -63,10 +63,17 @@
       </div>
     
       <div class="results-container">
-        <!-- Aquí se mostrarán los resultados de los productos -->
+        <div class="product-card" *ngFor="let product of products">
+          <img [src]="product.image" alt="{{ product.detail }}" class="product-image">
+          <div class="product-info">
+            <h3 class="product-detail">{{ product.detail }}</h3>
+            <p class="product-price"><strong>{{ product.price | currency }}</strong></p>
+            <p class="product-category"><em>{{ product.category_name }}</em></p>
+          </div>
+        </div>
       </div>
-    </div>
-     
+      
+    </div>     
   </div>
   <p-toast></p-toast>
   
