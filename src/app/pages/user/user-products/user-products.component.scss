@@ -1,17 +1,67 @@
 .main-container {
     display: grid;
-    grid-template-columns: 2fr 7fr;
-    height: calc(99.55vh - 60px); /* Resta la altura ocupada por el layout (navbar) */
+    grid-template-columns: 1fr 7fr;
+    height: calc(99.55vh - 60px); /* Ajuste para ocupar el espacio restante menos la altura de la barra de navegación */
   }
   
   .filters-container {
     background-color: #d3d3d3; /* gris claro */
-    padding: 10px;
+    padding: 20px;
+    border-right: 1px solid #ccc; /* Línea divisoria entre filtros y productos */
   }
   
-  .products-container {
-    background-color: rgba(255, 255, 255, 0.9); /* blanco opaco */
-    padding: 10px;
-    overflow-y: auto; /* Para permitir desplazamiento si hay muchos productos */
+  .filters-container h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  .filters-container label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  
+  .filters-container input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  .price-inputs {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .price-inputs input {
+    width: 70px; /* Ancho de los campos de texto para los precios */
+    margin-right: 10px;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .separator {
+    margin: 0 10px;  /* Espacio a cada lado del guion */
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .arrow-button {
+    background-color: #6c757d;  /* Gris oscuro */
+    border: none;
+    border-radius: 50%;
+    color: white;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: 10px; /* Espacio a la izquierda del botón */
+  }
+  
+  .arrow-button span {
+    font-size: 16px;
   }
   

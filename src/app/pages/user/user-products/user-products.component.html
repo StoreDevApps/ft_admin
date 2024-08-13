@@ -1,9 +1,29 @@
 <div class="main-container">
     <div class="filters-container">
-      <!-- Aquí irían los filtros -->
+      <h2>Categoría</h2>
+      <div *ngFor="let category of categories">
+        <label>
+          <input type="checkbox" [(ngModel)]="selectedCategories[category.id]" (change)="handleCategoryChange(category)" />
+          {{ category.name }}
+        </label>
+      </div>
+      
+      <h2>Precio</h2>
+      <label>
+        <input type="radio" name="priceRange" [(ngModel)]="priceOption" value="less_than_1" (change)="handleRadioButtonSelection()" />
+        Menos de $1
+      </label>
+      <div class="price-inputs">
+        <input type="text" placeholder="Mínimo" [(ngModel)]="minPrice" (keypress)="validateNumberInput($event)" (input)="clearPriceOption()" />
+        <span class="separator"> - </span>
+        <input type="text" placeholder="Máximo" [(ngModel)]="maxPrice" (keypress)="validateNumberInput($event)" (input)="clearPriceOption()" />
+        <button class="arrow-button" (click)="handleSearchClick()">
+          <span>&gt;</span>
+        </button>
+      </div>
     </div>
     <div class="products-container">
       <!-- Aquí irían los productos -->
     </div>
   </div>
-  
+  <p-toast></p-toast>
