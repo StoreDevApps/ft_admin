@@ -1,12 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../../services/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-products',
-  standalone: true,
-  imports: [],
   templateUrl: './user-products.component.html',
-  styleUrl: './user-products.component.scss'
+  styleUrls: ['./user-products.component.scss']
 })
-export class UserProductsComponent {
+export class UserProductsComponent implements OnInit {
 
+  constructor(private authService: AuthService, private router: Router) { }
+
+  ngOnInit(): void {
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigate(['/productos']);
+    }
+  }
 }

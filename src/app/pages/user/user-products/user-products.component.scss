@@ -1,11 +1,17 @@
-.container{
-    width: 100vh;
-    height: 80vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    p{
-        font-size: x-large;
-    }
-}
+.main-container {
+    display: grid;
+    grid-template-columns: 2fr 7fr;
+    height: calc(99.55vh - 60px); /* Resta la altura ocupada por el layout (navbar) */
+  }
+  
+  .filters-container {
+    background-color: #d3d3d3; /* gris claro */
+    padding: 10px;
+  }
+  
+  .products-container {
+    background-color: rgba(255, 255, 255, 0.9); /* blanco opaco */
+    padding: 10px;
+    overflow-y: auto; /* Para permitir desplazamiento si hay muchos productos */
+  }
+  
