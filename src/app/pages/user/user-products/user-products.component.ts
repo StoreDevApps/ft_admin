@@ -7,11 +7,17 @@ import { AuthService } from '../../../services/auth/auth.service';
 import { Categoria } from '../../../models/Categoria';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { CheckboxModule } from 'primeng/checkbox'; // Importa el módulo de Checkbox
+import { RadioButtonModule } from 'primeng/radiobutton'; 
+import { DropdownModule } from 'primeng/dropdown';
+import { IconFieldModule } from 'primeng/iconfield'; // Importa el módulo de IconField
+import { InputTextModule } from 'primeng/inputtext'; // Importa el módulo de InputText
+
 
 @Component({
   selector: 'app-user-products',
   standalone: true,
-  imports: [CommonModule, FormsModule, ToastModule], 
+  imports: [CommonModule, FormsModule, ToastModule,CheckboxModule, RadioButtonModule, DropdownModule, InputTextModule,IconFieldModule], 
   templateUrl: './user-products.component.html',
   styleUrls: ['./user-products.component.scss'],
   providers: [MessageService]
@@ -25,6 +31,11 @@ export class UserProductsComponent implements OnInit {
   minPrice: string = '';
   maxPrice: string = '';
 
+  sortOptions: any[] = []; // Para almacenar las opciones de ordenamiento
+  selectedSortOption: any; // Para almacenar la opción seleccionada
+  
+  searchQuery: string = '';
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -37,6 +48,16 @@ export class UserProductsComponent implements OnInit {
       this.router.navigate(['/productos']);
     }
     this.loadCategories();
+    this.loadOptions();  
+  }
+
+  loadOptions(): void{
+    this.sortOptions = [
+      { label: 'Por precio de mayor a menor', value: 'price-desc' },
+      { label: 'Por precio de menor a mayor', value: 'price-asc' },
+      { label: 'Por nombre de la A a la Z', value: 'name-asc' },
+      { label: 'Por nombre de la Z a la A', value: 'name-desc' }
+    ];
   }
 
   loadCategories(): void {
@@ -111,5 +132,13 @@ export class UserProductsComponent implements OnInit {
 
   buscarPorCategoria(): void {    
     this.messageService.add({ severity: 'info', summary: 'Busqueda realizada', detail: 'Búsqueda por categorías completada', life: 3000 });
+  }
+  
+  handleSearch(): void {    
+    console.log("Buscar: ", this.searchQuery);    
+  }
+
+  onSortChange(event: any): void {
+    const value = event.value;    
   }
 }

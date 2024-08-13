@@ -1,29 +1,69 @@
 <div class="main-container">
     <div class="filters-container">
       <h2>Categoría</h2>
+      <div *ngIf="categories.length === 0">
+        <p>No hay categorías</p> <!-- Mensaje cuando no hay categorías -->
+      </div>
       <div *ngFor="let category of categories">
-        <label>
-          <input type="checkbox" [(ngModel)]="selectedCategories[category.id]" (change)="handleCategoryChange(category)" />
-          {{ category.name }}
-        </label>
+        <p-checkbox 
+          [(ngModel)]="selectedCategories[category.id]" 
+          (onChange)="handleCategoryChange(category)" 
+          binary="true"
+          label="{{ category.name }}"
+        ></p-checkbox>
       </div>
       
       <h2>Precio</h2>
-      <label>
-        <input type="radio" name="priceRange" [(ngModel)]="priceOption" value="less_than_1" (change)="handleRadioButtonSelection()" />
-        Menos de $1
-      </label>
+      <div class="p-field-radiobutton">
+        <p-radioButton 
+          name="priceRange" 
+          [(ngModel)]="priceOption" 
+          value="less_than_1" 
+          (onClick)="handleRadioButtonSelection()" 
+          label="Menos de $1"
+        ></p-radioButton>
+      </div>
       <div class="price-inputs">
-        <input type="text" placeholder="Mínimo" [(ngModel)]="minPrice" (keypress)="validateNumberInput($event)" (input)="clearPriceOption()" />
+        <input 
+          type="text" 
+          placeholder="Mínimo" 
+          [(ngModel)]="minPrice" 
+          (keypress)="validateNumberInput($event)" 
+          (input)="clearPriceOption()" 
+        />
         <span class="separator"> - </span>
-        <input type="text" placeholder="Máximo" [(ngModel)]="maxPrice" (keypress)="validateNumberInput($event)" (input)="clearPriceOption()" />
+        <input 
+          type="text" 
+          placeholder="Máximo" 
+          [(ngModel)]="maxPrice" 
+          (keypress)="validateNumberInput($event)" 
+          (input)="clearPriceOption()" 
+        />
         <button class="arrow-button" (click)="handleSearchClick()">
           <span>&gt;</span>
         </button>
       </div>
     </div>
+  
     <div class="products-container">
-      <!-- Aquí irían los productos -->
+      <div class="header-container">
+        <input type="text" placeholder="Buscar" [(ngModel)]="searchQuery" />
+        <button class="search-button" (click)="handleSearch()">Buscar</button>
+      </div>
+      <div class="sort-container">
+        Ordenar: 
+        <p-dropdown 
+          [options]="sortOptions" 
+          [(ngModel)]="selectedSortOption" 
+          placeholder="Selecciona una opción" 
+          (onChange)="onSortChange($event)">
+        </p-dropdown>
+      </div>
+  
+      <div class="results-container">
+        <!-- Aquí se mostrarán los resultados de los productos -->
+      </div>
     </div>
   </div>
   <p-toast></p-toast>
+  

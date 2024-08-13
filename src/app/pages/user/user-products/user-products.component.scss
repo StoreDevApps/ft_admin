@@ -1,54 +1,99 @@
 .main-container {
     display: grid;
     grid-template-columns: 1fr 7fr;
-    height: calc(99.55vh - 60px); /* Ajuste para ocupar el espacio restante menos la altura de la barra de navegación */
-  }
-  
-  .filters-container {
-    background-color: #d3d3d3; /* gris claro */
+    height: calc(99.55vh - 60px);
+    /* Ajuste para ocupar el espacio restante menos la altura de la barra de navegación */
+}
+
+.filters-container {
+    background-color: #d3d3d3;
+    /* gris claro */
     padding: 20px;
-    border-right: 1px solid #ccc; /* Línea divisoria entre filtros y productos */
-  }
-  
-  .filters-container h2 {
+    border-right: 1px solid #ccc;
+    /* Línea divisoria entre filtros y productos */
+}
+
+.filters-container h2 {
     font-size: 20px;
-    margin-bottom: 20px;
-    font-weight: bold;
-  }
-  
-  .filters-container label {
-    display: block;
+    margin-top: 10px;
+    /* Espacio superior para los títulos */
+}
+
+.filters-container .p-checkbox,
+.filters-container .p-field-radiobutton,
+.filters-container .price-inputs {
+    margin-bottom: 15px;
+    /* Mismo espacio entre todos los elementos */
+}
+
+.filters-container .price-inputs input {
+    width: 70px;
+    /* Ancho de los campos de texto para los precios */
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.filters-container .p-checkbox {
+    display: flex;
+    align-items: center;
     margin-bottom: 10px;
+    /* Espacio entre cada checkbox */
+}
+
+.filters-container .p-checkbox-label {
+    margin-left: 10px;
+    /* Espacio entre el checkbox y el texto */
     font-size: 16px;
-  }
-  
-  .filters-container input[type="checkbox"] {
-    margin-right: 10px;
-  }
-  
-  .price-inputs {
+    /* Tamaño de la fuente similar al resto */
+}
+
+.filters-container .p-checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    /* Reduce el espacio entre los checkboxes */
+}
+
+.filters-container .p-checkbox:last-of-type {
+    margin-bottom: 15px;
+    /* Reduce el espacio entre el último checkbox y el siguiente título */
+}
+
+.p-field-radiobutton {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    /* Espacio debajo del radio button */
+}
+
+.price-inputs {
     display: flex;
     align-items: center;
     margin-top: 10px;
-  }
-  
-  .price-inputs input {
-    width: 70px; /* Ancho de los campos de texto para los precios */
+}
+
+.price-inputs input {
+    width: 70px;
+    /* Ancho de los campos de texto para los precios */
     margin-right: 10px;
     padding: 5px;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
-  }
-  
-  .separator {
-    margin: 0 10px;  /* Espacio a cada lado del guion */
+}
+
+.separator {
+    margin: 0 10px;
+    /* Espacio a cada lado del guion */
     font-size: 18px;
     color: #333;
-  }
-  
-  .arrow-button {
-    background-color: #6c757d;  /* Gris oscuro */
+}
+
+.arrow-button {
+    background-color: #6c757d;
+    /* Gris oscuro */
     border: none;
     border-radius: 50%;
     color: white;
@@ -58,10 +103,71 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    margin-left: 10px; /* Espacio a la izquierda del botón */
-  }
-  
-  .arrow-button span {
+    margin-left: 10px;
+    /* Espacio a la izquierda del botón */
+}
+
+.arrow-button span {
     font-size: 16px;
-  }
-  
+}
+
+.products-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    height: 100%;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%; 
+}
+
+.header-container input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #00324E;
+    border-radius: 0px;
+    box-sizing: border-box;
+}
+
+.search-button {
+    padding: 8px 16px;
+    background-color: #d3d3d3;
+    color: black;
+    border: 1px solid #00324E;
+    border-radius: 0px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #bcbcbc;
+}
+
+.sort-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.dropdown-container p-dropdown {
+    margin-left: 5px;
+    width: 100%;
+}
+
+.results-container {
+    flex: 1;
+    /*background-color: #d3d3d3;*/
+    /*border: 1px solid #00324E;*/
+    border-radius: 4px;
+    padding: 10px;
+    overflow: hidden;
+}
