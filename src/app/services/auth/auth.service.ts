@@ -102,4 +102,20 @@ export class AuthService {
     console.error(errorMessage);
     return throwError(errorMessage);
   }
+
+  decodeToken(token: string): any {
+    try {
+      return jwtDecode(token);
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
+  }
+
+  getUserDetails(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.base_url}api/user/${userId}/`).pipe(
+      catchError(this.handleError)
+    );
+  } 
+  
 }

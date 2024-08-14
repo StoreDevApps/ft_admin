@@ -29,7 +29,7 @@
         placeholder="Mínimo" 
         [(ngModel)]="minPrice" 
         (keypress)="validateNumberInput($event)" 
-        (input)="clearPriceOption()" 
+       
       />
       <span class="separator"> - </span>
       <input 
@@ -37,7 +37,7 @@
         placeholder="Máximo" 
         [(ngModel)]="maxPrice" 
         (keypress)="validateNumberInput($event)" 
-        (input)="clearPriceOption()" 
+       
       />
       <button class="arrow-button" (click)="handleSearchClick()">
         <span>&gt;</span>
@@ -53,11 +53,11 @@
       </div>
       <div class="sort-wrapper">
         <p-dropdown 
-          [options]="sortOptions" 
-          [(ngModel)]="selectedSortOption" 
-          placeholder="Ordenar por" 
-          (onChange)="onSortChange($event)">
-        </p-dropdown>
+        [options]="sortOptions" 
+        [(ngModel)]="selectedSortOption" 
+        placeholder="Ordenar por" 
+        (onChange)="onSortChange($event)">
+      </p-dropdown>
         <button class="clear-button" (click)="clearFilters()">Borrar Filtros</button>
       </div>
     </div>

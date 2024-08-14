@@ -47,8 +47,6 @@ export class UserProductsComponent implements OnInit {
   cartItems: any[] = [];
   isCartOpen: boolean = false;
 
-  showSortOptions: boolean = false;
-
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -67,12 +65,6 @@ export class UserProductsComponent implements OnInit {
 
   addToCart(product: any): void {
     this.cartItems.push(product);
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Producto añadido',
-      detail: `${product.detail} ha sido añadido al carrito`,
-      life: 3000
-    });
   }
 
   toggleCart(): void {
@@ -93,44 +85,55 @@ export class UserProductsComponent implements OnInit {
       if (data.success) {
         this.categories = data.product_categories;
       } else {
-        console.error('Error al cargar las categorías');
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar las categorías', life: 3000 });
       }
     }, error => {
-      console.error('Error en la solicitud:', error);
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error en la solicitud de categorías', life: 3000 });
     });
   }
 
   loadPage(page: number): void {
     const filters = this.buildFilters();
+    console.log('Filters applied:', filters);  // Verifica los filtros construidos
 
     this.clienteService.getProducts(page, this.pageSize, filters).subscribe((response) => {
-      if (response.success) {
-        this.products = response.products;
-        this.loadImagesForProducts();
-        this.totalProducts = response.total_pages * this.pageSize;
-        this.currentPage = page;
-        this.showSortOptions = true; // Mostrar opciones de ordenamiento cuando se aplica un filtro
-      } else {
-        console.error('Error al cargar los productos');
-      }
+        if (response.success) {
+            this.products = response.products;
+            this.loadImagesForProducts();
+            this.totalProducts = response.total_pages * this.pageSize;
+            this.currentPage = page;
+        } else {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los productos', life: 3000 });
+        }
     }, error => {
-      console.error('Error en la solicitud:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error en la solicitud de productos', life: 3000 });
     });
-  }
+}
+
 
   buildFilters(): any {
     const trimmedQuery = this.searchQuery.trim().toLowerCase();
     const min = this.minPrice ? parseFloat(this.minPrice) : null;
     const max = this.maxPrice ? parseFloat(this.maxPrice) : null;
 
+    let finalMaxPrice = max;
+    let finalMinPrice = min;
+
+    // Si el radiobutton está seleccionado, sobrescribir el filtro de precio
+    if (this.priceOption === 'less_than_1') {
+      finalMaxPrice = 1;
+      finalMinPrice = null; // Ignorar el mínimo en este caso
+    }
+
     return {
       categories: this.selectedCategoryIds,
-      minPrice: min ? min.toString() : '',
-      maxPrice: max ? max.toString() : '',
+      minPrice: finalMinPrice !== null ? finalMinPrice.toString() : '',
+      maxPrice: finalMaxPrice !== null ? finalMaxPrice.toString() : '',
       searchQuery: trimmedQuery,
       sortOption: this.selectedSortOption,
     };
-  }
+}
+
 
   loadImagesForProducts(): void {
     this.products.forEach(product => {
@@ -142,7 +145,7 @@ export class UserProductsComponent implements OnInit {
           };
           reader.readAsDataURL(imageBlob);
         }, error => {
-          console.error('Error al cargar la imagen:', error);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar la imagen del producto', life: 3000 });
         });
       }
     });
@@ -171,13 +174,16 @@ export class UserProductsComponent implements OnInit {
   }
 
   handleRadioButtonSelection(): void {
-    this.minPrice = '';
-    this.maxPrice = '1'; // Max Price set to 1 for RadioButton
+    this.minPrice = ''; // Borrar el mínimo especificado por el usuario
+    this.maxPrice = ''; // Borrar el máximo especificado por el usuario
+    this.priceOption = 'less_than_1'; // Establecer la opción del radiobutton
 
     this.applyFilters(); // Aplicar los filtros acumulativos
   }
 
   handleSearchClick(): void {
+    this.priceOption = ''; // Desmarcar cualquier radiobutton si se está utilizando un rango de precios personalizado
+
     const min = this.minPrice ? parseFloat(this.minPrice) : null;
     const max = this.maxPrice ? parseFloat(this.maxPrice) : null;
 
@@ -204,8 +210,7 @@ export class UserProductsComponent implements OnInit {
   }
 
   handleSearch(): void {
-    this.clearFilters(); // Borrar los filtros previos al realizar la búsqueda
-    this.applyFilters(); // Aplica la búsqueda con el nuevo término
+    this.applyFilters(); // Aplica la búsqueda con el nuevo término sin borrar otros filtros
   }
 
   onSortChange(event: any): void {
@@ -221,13 +226,6 @@ export class UserProductsComponent implements OnInit {
     this.priceOption = '';
     this.selectedSortOption = null;
     this.searchQuery = '';
-    this.showSortOptions = false; // Ocultar opciones de ordenamiento cuando se borran los filtros
     this.loadPage(1); // Recargar productos desde la primera página sin filtros
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Filtros borrados',
-      detail: 'Todos los filtros han sido borrados',
-      life: 3000
-    });
   }
 }
