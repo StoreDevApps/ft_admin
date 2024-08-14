@@ -12,12 +12,15 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield'; // Importa el módulo de IconField
 import { InputTextModule } from 'primeng/inputtext'; // Importa el módulo de InputText
-
+import { DividerModule } from 'primeng/divider';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component({
   selector: 'app-user-products',
   standalone: true,
-  imports: [CommonModule, FormsModule, ToastModule, CheckboxModule, RadioButtonModule, DropdownModule, InputTextModule, IconFieldModule],
+  imports: [CommonModule, FormsModule, ToastModule, CheckboxModule, RadioButtonModule, DropdownModule, InputTextModule, IconFieldModule,
+    DividerModule, PaginatorModule 
+  ],
   templateUrl: './user-products.component.html',
   styleUrls: ['./user-products.component.scss'],
   providers: [MessageService]
@@ -36,10 +39,12 @@ export class UserProductsComponent implements OnInit {
   searchQuery: string = '';
 
   products: any[] = [];
-  totalPages: number = 0;
-  currentPage: number = 1;
+  totalProducts: number = 0;
   pageSize: number = 10;
-  pages: number[] = [];
+  currentPage: number = 1;
+
+  cartItems: any[] = []; // Array to hold the items in the cart
+  isCartOpen: boolean = false; // Boolean to toggle cart visibility
 
   constructor(
     private authService: AuthService,
@@ -54,7 +59,16 @@ export class UserProductsComponent implements OnInit {
     }
     this.loadCategories();
     this.loadOptions();
-    this.loadPage(1);
+    this.loadPage(this.currentPage);
+  }
+
+  addToCart(product: any): void {
+    this.cartItems.push(product);
+    this.messageService.add({ severity: 'success', summary: 'Producto añadido', detail: `${product.detail} ha sido añadido al carrito`, life: 3000 });
+  }
+
+  toggleCart(): void {
+    this.isCartOpen = !this.isCartOpen;
   }
 
   loadOptions(): void {
@@ -82,15 +96,32 @@ export class UserProductsComponent implements OnInit {
     this.clienteService.getProducts(page, this.pageSize).subscribe((response) => {
       if (response.success) {
         this.products = response.products;
-        this.totalPages = response.total_pages;
+        this.products.forEach(product => {
+          if (product.images && product.images.length > 0) {
+            this.clienteService.getImage(product.images[0]).subscribe(imageBlob => {
+              const reader = new FileReader();
+              reader.onload = () => {
+                product.image = reader.result as string;
+              };
+              reader.readAsDataURL(imageBlob);
+            }, error => {
+              console.error('Error al cargar la imagen:', error);
+            });
+          }
+        });
+        this.totalProducts = response.total_pages * this.pageSize;
         this.currentPage = page;
-        this.pages = Array.from({length: this.totalPages}, (_, i) => i + 1);
       } else {
         console.error('Error al cargar los productos');
       }
     }, error => {
       console.error('Error en la solicitud:', error);
     });
+  }  
+  
+  onPageChange(event: any): void {
+    this.pageSize = event.rows;
+    this.loadPage(event.page + 1);
   }
   
   validateNumberInput(event: KeyboardEvent): void {
@@ -178,6 +209,4 @@ export class UserProductsComponent implements OnInit {
       
     this.buscarPorCategoria();
   }
-
-  
 }

@@ -1,79 +1,90 @@
 <div class="main-container">
-    <div class="filters-container">
-      <h2>Categoría</h2>
-      <div *ngIf="categories.length === 0">
-        <p>No hay categorías</p> <!-- Mensaje cuando no hay categorías -->
+  <div class="filters-container">
+    <h2>Categoría</h2>
+    <div *ngIf="categories.length === 0">
+      <p>No hay categorías</p> <!-- Mensaje cuando no hay categorías -->
+    </div>
+    <div *ngFor="let category of categories">
+      <p-checkbox 
+        [(ngModel)]="selectedCategories[category.id]" 
+        (onChange)="handleCategoryChange(category)" 
+        binary="true"
+        label="{{ category.name }}"
+      ></p-checkbox>
+    </div>
+    
+    <h2>Precio</h2>
+    <div class="p-field-radiobutton">
+      <p-radioButton 
+        name="priceRange" 
+        [(ngModel)]="priceOption" 
+        value="less_than_1" 
+        (onClick)="handleRadioButtonSelection()" 
+        label="Menos de $1"
+      ></p-radioButton>
+    </div>
+    <div class="price-inputs">
+      <input 
+        type="text" 
+        placeholder="Mínimo" 
+        [(ngModel)]="minPrice" 
+        (keypress)="validateNumberInput($event)" 
+        (input)="clearPriceOption()" 
+      />
+      <span class="separator"> - </span>
+      <input 
+        type="text" 
+        placeholder="Máximo" 
+        [(ngModel)]="maxPrice" 
+        (keypress)="validateNumberInput($event)" 
+        (input)="clearPriceOption()" 
+      />
+      <button class="arrow-button" (click)="handleSearchClick()">
+        <span>&gt;</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="products-container">
+    <div class="header-container">
+      <div class="search-wrapper">
+        <input type="text" placeholder="Buscar" [(ngModel)]="searchQuery" />
+        <button class="search-button" (click)="handleSearch()">Buscar</button>
       </div>
-      <div *ngFor="let category of categories">
-        <p-checkbox 
-          [(ngModel)]="selectedCategories[category.id]" 
-          (onChange)="handleCategoryChange(category)" 
-          binary="true"
-          label="{{ category.name }}"
-        ></p-checkbox>
-      </div>
-      
-      <h2>Precio</h2>
-      <div class="p-field-radiobutton">
-        <p-radioButton 
-          name="priceRange" 
-          [(ngModel)]="priceOption" 
-          value="less_than_1" 
-          (onClick)="handleRadioButtonSelection()" 
-          label="Menos de $1"
-        ></p-radioButton>
-      </div>
-      <div class="price-inputs">
-        <input 
-          type="text" 
-          placeholder="Mínimo" 
-          [(ngModel)]="minPrice" 
-          (keypress)="validateNumberInput($event)" 
-          (input)="clearPriceOption()" 
-        />
-        <span class="separator"> - </span>
-        <input 
-          type="text" 
-          placeholder="Máximo" 
-          [(ngModel)]="maxPrice" 
-          (keypress)="validateNumberInput($event)" 
-          (input)="clearPriceOption()" 
-        />
-        <button class="arrow-button" (click)="handleSearchClick()">
-          <span>&gt;</span>
-        </button>
+      <div class="sort-wrapper">
+        <p-dropdown 
+          [options]="sortOptions" 
+          [(ngModel)]="selectedSortOption" 
+          placeholder="Ordenar por" 
+          (onChange)="onSortChange($event)">
+        </p-dropdown>
+        <button class="clear-button" (click)="clearFilters()">Borrar Filtros</button>
       </div>
     </div>
   
-    <div class="products-container">
-      <div class="header-container">
-        <div class="search-wrapper">
-          <input type="text" placeholder="Buscar" [(ngModel)]="searchQuery" />
-          <button class="search-button" (click)="handleSearch()">Buscar</button>
-        </div>
-        <div class="sort-wrapper">
-          <p-dropdown 
-            [options]="sortOptions" 
-            [(ngModel)]="selectedSortOption" 
-            placeholder="Ordenar por" 
-            (onChange)="onSortChange($event)">
-          </p-dropdown>
-          <button class="clear-button" (click)="clearFilters()">Borrar Filtros</button>
+    <div class="results-container">
+      <div class="product-card" *ngFor="let product of products">
+        <img [src]="product.image" alt="{{ product.detail }}" class="product-image">
+        <div class="product-info">
+          <h3 class="product-detail">{{ product.detail }}</h3>
+          <p class="product-price">{{ product.price | currency }}</p> <!-- Aquí debe mostrarse el precio -->
+          <p class="product-category">{{ product.category }}</p>
+          <button class="add-to-cart-button" (click)="addToCart(product)">Añadir al Carrito</button>
         </div>
       </div>
+    </div>
     
-      <div class="results-container">
-        <div class="product-card" *ngFor="let product of products">
-          <img [src]="product.image" alt="{{ product.detail }}" class="product-image">
-          <div class="product-info">
-            <h3 class="product-detail">{{ product.detail }}</h3>
-            <p class="product-price"><strong>{{ product.price | currency }}</strong></p>
-            <p class="product-category"><em>{{ product.category_name }}</em></p>
-          </div>
-        </div>
-      </div>
-      
-    </div>     
-  </div>
-  <p-toast></p-toast>
-  
+    <div class="pagination-container">
+      <p-divider class="custom-divider"></p-divider>
+    
+      <p-paginator 
+        [rows]="pageSize" 
+        [totalRecords]="totalProducts" 
+        [rowsPerPageOptions]="[5,10,15]" 
+        (onPageChange)="onPageChange($event)">
+      </p-paginator>
+    </div>
+
+  </div>     
+</div>
+<p-toast></p-toast>

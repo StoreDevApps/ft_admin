@@ -22,4 +22,9 @@ export class ClienteService {
       `${this.apiUrl}/products-pagination/?page=${page}&page_size=${pageSize}`
     );
   }
+
+  getImage(imagePath: string): Observable<Blob> {
+    const imageUrl = `${this.apiUrl}${imagePath}`;
+    return this.http.get(imageUrl, { responseType: 'blob' });
+  }
 }
