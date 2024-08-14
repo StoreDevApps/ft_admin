@@ -17,12 +17,29 @@ export class ClienteService {
     return this.http.get<{ success: boolean; product_categories: Categoria[] }>(`${this.apiUrl}/product-categories/`);
   }
 
-  getProducts(page: number, pageSize: number): Observable<{ success: boolean; products: any[], total_pages: number }> {
+  getProducts(page: number, pageSize: number, filters?: any): Observable<{ success: boolean; products: any[], total_pages: number }> {
+    let params: any = {
+      page: page.toString(),
+      page_size: pageSize.toString(),
+    };
+
+    if (filters) {
+      if (filters.categories && filters.categories.length > 0) {
+        params.categories = filters.categories.join(',');
+      }
+      if (filters.minPrice) {
+        params.min_price = filters.minPrice;
+      }
+      if (filters.maxPrice) {
+        params.max_price = filters.maxPrice;
+      }
+    }
+
     return this.http.get<{ success: boolean; products: any[], total_pages: number }>(
-      `${this.apiUrl}/products-pagination/?page=${page}&page_size=${pageSize}`
+      `${this.apiUrl}/products-pagination/`, { params }
     );
   }
-
+  
   getImage(imagePath: string): Observable<Blob> {
     const imageUrl = `${this.apiUrl}${imagePath}`;
     return this.http.get(imageUrl, { responseType: 'blob' });

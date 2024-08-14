@@ -170,8 +170,9 @@
     height: 100%;
     justify-content: flex-start;
     align-items: flex-start;
+    overflow-y: auto; 
   }
-  
+
   .product-card {
     display: flex;
     flex-direction: column;
