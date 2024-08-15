@@ -7,13 +7,17 @@ import { ClienteService } from '../../../services/client/cliente.service';
 import { DividerModule } from 'primeng/divider';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { PanelModule } from 'primeng/panel';
 
 @Component({
   selector: 'app-user-product',
   standalone: true,
-  imports: [CommonModule, ScrollPanelModule, DividerModule,RatingModule, FormsModule],
+  imports: [CommonModule, ScrollPanelModule, DividerModule,RatingModule, FormsModule, ToastModule, PanelModule],
   templateUrl: './user-product.component.html',
-  styleUrls: ['./user-product.component.scss']
+  styleUrls: ['./user-product.component.scss'],
+  providers: [MessageService] 
 })
 export class UserProductComponent implements OnInit {
   product: Product | undefined;
@@ -21,11 +25,13 @@ export class UserProductComponent implements OnInit {
   images: string[] = [];
   videos: string[] = [];
   localRating: number | undefined;
+  cartQuantity: number = 0;
+  maxQuantity: number = 10; 
 
-  constructor(
-    private route: ActivatedRoute,
+  constructor(    
     private router: Router,
-    private clienteService: ClienteService
+    private clienteService: ClienteService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -35,6 +41,7 @@ export class UserProductComponent implements OnInit {
       this.loadImages();
       this.videos = this.product.videos;
       this.loadProductRatings();
+      this.loadCartQuantity();
     }
   }
 
@@ -111,4 +118,28 @@ export class UserProductComponent implements OnInit {
     const base64Pattern = /^(data:image\/(jpeg|png|gif|bmp|webp|svg\+xml);base64,|data:application\/octet-stream;base64,)/;
     return base64Pattern.test(data);
   }
+
+  increaseQuantity(): void {
+    if (this.cartQuantity < this.maxQuantity) {
+      this.cartQuantity++;
+      this.updateCart();
+    }else{
+      this.messageService.add({ severity: 'warn', summary: 'Cantidad no permitida', detail: 'Actualmente no contamos con más de esas cantidad de mercadería', life: 3000 });
+    }
+  }
+
+  decreaseQuantity(): void {
+    if (this.cartQuantity > 0) {
+      this.cartQuantity--;
+      this.updateCart();
+    } else {
+      this.messageService.add({ severity: 'warn', summary: 'Cantidad no permitida', detail: 'No puedes tener menos de 0 en el carrito', life: 3000 });
+    }
+  }
+
+  loadCartQuantity(): void {
+  }
+
+  updateCart(): void {
+    }
 }
