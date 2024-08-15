@@ -58,7 +58,6 @@ export class AdminService {
   }
 
   postAdminServices(service: any, image: File): Observable<any> {
-
     const fileNameParts = image.name.split('.');
     const fileExtension = fileNameParts.pop();
     const fileNameWithoutExtension = fileNameParts.join('.');
@@ -77,7 +76,6 @@ export class AdminService {
   }
 
   putAdminServices(service: any, image: File): Observable<any> {
-
     const formData = new FormData();
 
     if (typeof image !== 'string') {
@@ -85,7 +83,7 @@ export class AdminService {
       const fileExtension = fileNameParts.pop();
       const fileNameWithoutExtension = fileNameParts.join('.');
       const uniqueName = `${fileNameWithoutExtension}-${Date.now()}.${fileExtension}`;
-  
+
       const fileData = {
         name: fileNameWithoutExtension,
         uniqueNameWithExtension: uniqueName,
@@ -97,7 +95,7 @@ export class AdminService {
     formData.append('service', JSON.stringify(service));
     return this.http.put<any>(
       `${this.base_url}api/admin/service/${service.id}/`,
-      formData,
+      formData
     );
   }
 
@@ -105,5 +103,22 @@ export class AdminService {
     return this.http.delete<any>(
       `${this.base_url}api/admin/service/${service.id}/`
     );
+  }
+
+  getListWorkers(): Observable<any> {
+    return this.http.get<any>(`${this.base_url}api/admin/list-workers/`);
+  }
+
+  postCreateWorker(nuevoTrabajador: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.base_url}api/admin/list-workers/`,
+      nuevoTrabajador
+    );
+  }
+
+  postWorkerToAdmin(email: string): Observable<any> {
+    return this.http.post<any>(`${this.base_url}api/admin/worker-to-admin/`, {
+      email,
+    });
   }
 }

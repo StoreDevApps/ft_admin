@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
+import { AdminService } from '../../../services/admin/admin.service';
 
 interface Trabajador {
   name: string;
@@ -46,13 +47,8 @@ interface Trabajador {
   styleUrl: './create-worker.component.scss',
 })
 export class CreateWorkerComponent {
-  nombres: string;
-  apellidos: string;
-  correo: string;
-  telefono: string;
-  cedula: string;
-  searchValue: string = '';
 
+  searchValue: string = '';
   nuevoTrabajador: Trabajador = {
     name: '',
     last_name: '',
@@ -67,13 +63,7 @@ export class CreateWorkerComponent {
 
   openNuevoTrabajador: boolean = false;
 
-  constructor() {
-    this.nombres = '';
-    this.apellidos = '';
-    this.correo = '';
-    this.telefono = '';
-    this.cedula = '';
-  }
+  constructor(private adminService: AdminService, private messageService: MessageService, private confirmationService: ConfirmationService) {}
 
   ngOnInit() {
     this.cargarTrabajadores();
@@ -81,20 +71,42 @@ export class CreateWorkerComponent {
 
   crearNuevoTrabajador() {
     // Aquí puedes manejar el envío del formulario, por ejemplo, enviando los datos a un servidor
-    console.log('Trabajador creado:', {
-      nombres: this.nombres,
-      apellidos: this.apellidos,
-      correo: this.correo,
-      telefono: this.telefono,
-      cedula: this.cedula,
-    });
+    console.log('Trabajador creado:', this.nuevoTrabajador);
     this.submitted = true;
 
-    this.nombres = '';
-    this.apellidos = '';
-    this.correo = '';
-    this.telefono = '';
-    this.cedula = '';
+    if (!this.validarDatos()) {
+      return;
+    }
+
+    this.adminService.postCreateWorker(this.nuevoTrabajador).subscribe({
+      next: (data) => {
+        if (data.success) {
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Se ha creado el usuario',
+          })
+
+          this.cargarTrabajadores();
+
+        }
+      },
+      error: (error) => {
+        console.error(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo crear el usuario',
+        })
+      },
+    });
+
+    this.closeNewTrabajador();
+  }
+
+  validarDatos() {
+    return this.nuevoTrabajador.name && this.nuevoTrabajador.last_name && this.nuevoTrabajador.email && this.nuevoTrabajador.phone_number;
   }
 
   openNewTrabajador() {
@@ -103,6 +115,7 @@ export class CreateWorkerComponent {
 
   closeNewTrabajador() {
     this.openNuevoTrabajador = false;
+    this.submitted = false;
     this.nuevoTrabajador = {
       name: '',
       last_name: '',
@@ -117,78 +130,40 @@ export class CreateWorkerComponent {
   }
 
   cargarTrabajadores() {
-    this.loading = false;
-    this.trabajadores = [
-      {
-        name: 'Luis',
-        last_name: 'Perez',
-        email: 'luis@perez',
-        phone_number: '1234567890',
+    this.adminService.getListWorkers().subscribe({
+      next: (data) => {
+        if (data.success) {
+          this.trabajadores = data.workers;
+          this.loading = false;
+        }
       },
-      {
-        name: 'Maria',
-        last_name: 'Gonzalez',
-        email: 'maria@gonzalez',
-        phone_number: '9876543210',
+      error: (error) => {
+        console.error('Error loading workers:', error);
       },
-      {
-        name: 'Carlos',
-        last_name: 'Ramirez',
-        email: 'carlos@ramirez',
-        phone_number: '5555555555',
-      },
-      {
-        name: 'Ana',
-        last_name: 'Martinez',
-        email: 'ana@martinez',
-        phone_number: '1111111111',
-      },
-      {
-        name: 'Pedro',
-        last_name: 'Lopez',
-        email: 'pedro@lopez',
-        phone_number: '2222222222',
-      },
-      {
-        name: 'Jorge',
-        last_name: 'Sanchez',
-        email: 'jorge@lopez',
-        phone_number: '3333333333',
-      },
-      {
-        name: 'Sofia',
-        last_name: 'Hernandez',
-        email: 'sofia@hernandez',
-        phone_number: '4444444444',
-      },
-      {
-        name: 'Andres',
-        last_name: 'Torres',
-        email: 'andres@torres',
-        phone_number: '5555555555',
-      },
-      {
-        name: 'Gabriel',
-        last_name: 'Garcia',
-        email: 'gabriel@garcia',
-        phone_number: '6666666666',
-      },
-      {
-        name: 'Valentina',
-        last_name: 'Ramirez',
-        email: 'valentina@ramirez',
-        phone_number: '7777777777',
-      },
-      {
-        name: 'Camila',
-        last_name: 'Lopez',
-        email: 'camila@lopez',
-        phone_number: '8888888888',
-      },
-    ];
+    })
   }
 
   convertToAdmin(trabajador: Trabajador) {
-    throw new Error('Method not implemented.');
+    console.log(trabajador);
+    this.adminService.postWorkerToAdmin(trabajador.email).subscribe({
+      next: (data) => {
+        if (data.success) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Éxito',
+            detail: 'Se ha convertido al usuario en administrador',
+          })
+          this.cargarTrabajadores();
+        }
+      },
+      error: (error) => {
+        console.error(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo convertir al usuario en administrador',
+        })
+      },
+    })
   }
 }
