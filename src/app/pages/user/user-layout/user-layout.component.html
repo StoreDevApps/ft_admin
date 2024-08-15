@@ -12,10 +12,12 @@
             </a>
         </div>
         <div class="navbar-right">
-            <a [routerLink]="['/usuario/carrito']">Carrito</a>
+            <a [routerLink]="['/usuario/carrito']">
+                Carrito <p-badge [value]="cartItemCount" severity="info"></p-badge>
+            </a>
             <a>Hola, {{ userName }}</a>
             <button (click)="logout()" class="btn btn-link">Cerrar Sesión</button>
-          </div>          
+        </div>                
     </nav>
     <div class="content">
         <router-outlet></router-outlet>

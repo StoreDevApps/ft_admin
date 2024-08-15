@@ -1,24 +1,29 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
+import { BadgeModule } from 'primeng/badge';
+import { CarritoService } from '../../../services/carrito/carrito.service';
+
 
 @Component({
   selector: 'app-user-layout',
   standalone: true,
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, RouterLink, BadgeModule],
   templateUrl: './user-layout.component.html',
   styleUrl: './user-layout.component.scss'
 })
 export class UserLayoutComponent {
 
   userName: string | null = null;
+  cartItemCount: number = 0; 
 
-  constructor(private authService: AuthService,private router: Router) {}
+  constructor(private authService: AuthService,private router: Router, private carritoService: CarritoService) {}
 
   ngOnInit(): void {
     this.loadUserName();
+    this.loadCartItemCount();
   }
-  
+
   loadUserName(): void {
     const token = localStorage.getItem('access_token');
     if (token) {
@@ -35,6 +40,18 @@ export class UserLayoutComponent {
       );
     }
   }
+
+  loadCartItemCount(): void {
+    this.carritoService.getCartItemCount().subscribe(
+      (count: number) => {
+        this.cartItemCount = count;
+      },
+      (error: any) => {
+        console.error('Error fetching cart item count:', error);
+      }
+    );
+  }
+  
   logout() {
     this.authService.logout();
     this.router.navigate(['/']);
