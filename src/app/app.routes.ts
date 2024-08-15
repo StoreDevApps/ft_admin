@@ -26,6 +26,7 @@ import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 import { AdminPurchaseControlComponent } from './pages/admin/admin-purchase-control/admin-purchase-control.component';
 import { PublicContactUsComponent } from './pages/public/public-contact-us/public-contact-us.component';
+import { UserProductComponent } from './pages/user/user-product/user-product.component';
 
 export const routes: Routes = [
   {
@@ -95,6 +96,11 @@ export const routes: Routes = [
         title: 'Productos - Store',
       },
       {
+        path: 'detalle-producto/:categoria/:nombre',
+        component: UserProductComponent,
+        title: 'Producto Detalle - Store',
+      },
+      {
         path: 'servicios',
         component: PublicServicesComponent,
         title: 'Servicios - Store',
@@ -109,6 +115,7 @@ export const routes: Routes = [
         component: UserShopppingCartComponent,
         title: 'carrito - Store',
       },
+      
       { path: '', redirectTo: '', pathMatch: 'prefix' },
     ],
   },

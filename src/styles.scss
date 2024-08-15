@@ -11,3 +11,16 @@
     margin: 0 !important;
     padding: 0 !important;
 }
+
+.p-panel.p-panel-toggleable .p-panel-header{
+    margin-top: 15px !important;
+}
+
+.gold-stars .p-rating .pi-star {
+    color: gold;
+  }
+  
+  .p-inplace .p-inplace-display{
+    margin-bottom: 10px;
+    display:flex;
+  }

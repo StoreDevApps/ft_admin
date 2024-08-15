@@ -63,16 +63,24 @@
     </div>
   
     <div class="results-container">
-      <div class="product-card" *ngFor="let product of products">
-        <img [src]="product.image" alt="{{ product.detail }}" class="product-image">
+      <div 
+        class="product-card" 
+        *ngFor="let product of products"
+        (click)="goToProductDetail(product)"
+      >
+        <img [src]="getProductImage(product)" alt="{{ product.detail }}" class="product-image">
         <div class="product-info">
           <h3 class="product-detail">{{ product.detail }}</h3>
-          <p class="product-price">{{ product.price | currency }}</p> <!-- Aquí debe mostrarse el precio -->
-          <p class="product-category">{{ product.category }}</p>
-          <button class="add-to-cart-button" (click)="addToCart(product)">Añadir al Carrito</button>
+          <p class="product-price">{{ product.price | currency }}</p>
+          <div class="product-category-add-cart">
+            <p class="product-category">{{ product.category }}</p>
+            <button class="add-to-cart-button" (click)="addToCart(product); $event.stopPropagation()">
+              <i class="pi pi-cart-plus"></i> <!-- Icono de carrito -->
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </div>    
     
     <div class="pagination-container">
       <p-divider class="custom-divider"></p-divider>
@@ -84,7 +92,6 @@
         (onPageChange)="onPageChange($event)">
       </p-paginator>
     </div>
-
   </div>     
 </div>
 <p-toast></p-toast>
