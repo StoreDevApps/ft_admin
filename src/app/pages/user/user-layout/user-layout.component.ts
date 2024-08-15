@@ -18,11 +18,16 @@ export class UserLayoutComponent {
   cartItemCount: number = 0; 
 
   constructor(private authService: AuthService,private router: Router, private carritoService: CarritoService) {}
-
+  
   ngOnInit(): void {
     this.loadUserName();
-    this.loadCartItemCount();
+    this.carritoService.getCartItemCount().subscribe(count => {
+      console.log('Item count received:', count);  // Log para verificar si se recibe el conteo
+      this.cartItemCount = count;
+    });
+    this.carritoService.updateCartItemCount();  // Inicializa el conteo de ítems en el carrito
   }
+  
 
   loadUserName(): void {
     const token = localStorage.getItem('access_token');

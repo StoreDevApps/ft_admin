@@ -15,6 +15,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DividerModule } from 'primeng/divider';
 import { PaginatorModule } from 'primeng/paginator';
 import { Product } from '../../../models/Product'; 
+import { CarritoService } from '../../../services/carrito/carrito.service';
 
 
 @Component({
@@ -54,7 +55,8 @@ export class UserProductsComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private clienteService: ClienteService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private carritoService: CarritoService
   ) { }
 
   ngOnInit(): void {
@@ -65,9 +67,22 @@ export class UserProductsComponent implements OnInit {
     this.loadOptions();
     this.loadPage(this.currentPage);
   }
-  addToCart(product: Product): void {  // Cambiar de 'any' a 'Product'
-    this.cartItems.push(product);
+  addToCart(product: Product): void {    
+    this.carritoService.addToCart(product.id).subscribe(
+      (response: { success: any; }) => {
+        if (response.success) {
+          this.cartItems.push(product);
+          //this.messageService.add({ severity: 'success', summary: 'Añadido', detail: 'Producto añadido al carrito', life: 3000 });
+        } else {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo añadir el producto al carrito', life: 3000 });
+        }
+      },
+      () => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al intentar añadir el producto al carrito', life: 3000 });
+      }
+    );
   }
+  
   
   toggleCart(): void {
     this.isCartOpen = !this.isCartOpen;
