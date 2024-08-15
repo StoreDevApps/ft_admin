@@ -30,8 +30,7 @@ export class CarritoService {
     );
   }
   
-  
-  // Añadir un producto al carrito
+    
   addToCart(productId: number): Observable<any> {
     return this.http.post<any>(`${this.apiURL}/carrito/add`, { productId }).pipe(
       tap(() => {
@@ -40,17 +39,20 @@ export class CarritoService {
     );
   }
 
-  // Obtener los ítems del carrito
-  getCartItems(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiURL}/carrito/items`);
+  getCartItems(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiURL}/carrito/items`);
   }
 
-  // Limpiar el carrito
   clearCart(): Observable<any> {
     return this.http.post<any>(`${this.apiURL}/carrito/clear`, {}).pipe(
       tap(() => {
         this.updateCartItemCount();  // Actualizar el conteo de ítems después de limpiar el carrito
       })
     );
+  }
+
+  updateCartItem(item: any): Observable<any> {
+    console.log('Sending item to update:', item); // Verifica el objeto que se está enviando
+    return this.http.put<any>(`${this.apiURL}/carrito/items/${item.id}`, item);
   }
 }
