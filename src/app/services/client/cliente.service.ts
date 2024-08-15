@@ -41,9 +41,13 @@ export class ClienteService {
     return this.http.get(`${this.apiUrl}/products-pagination/`, { params });
   }
 
+  getProduct(productId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/products/${productId}/`);
+  }
 
   getImage(imagePath: string): Observable<Blob> {
     const imageUrl = `${this.apiUrl}${imagePath}`;
     return this.http.get(imageUrl, { responseType: 'blob' });
   }
 }
+

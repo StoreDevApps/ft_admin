@@ -21,17 +21,32 @@
     overflow: hidden; /* Evita que el contenido desborde el contenedor */
 }
 
-
 .informacion-producto-container {
     flex: 9;
-    /* Ajusta la relación de flex aquí */
     display: flex;
     flex-direction: column;
     height: 100%;
     padding: 10px;
     box-sizing: border-box;
+    gap: 10px;
 }
 
+.detalles-producto-container {
+    flex: 5;
+    background-color: #f5f5f5;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.comentarios-producto-container {
+    flex: 6;    
+    padding: 20px;
+    box-sizing: border-box;    
+}
+
+.detalles-producto-container h2 {
+    font-weight: bold;
+}
 
 .resto-fotos-container {
     justify-content: center;
@@ -67,16 +82,16 @@
       padding: 5px;
       background-color: white; /* Fondo blanco para que el borde se vea mejor */
     }
-  }
-  
-  .foto-principal {
+}
+
+.foto-principal {
     width: 100%;
     height: auto;
     object-fit: contain;
     transition: transform 0.3s ease-in-out; /* Efecto de transición suave */
-  }
-  
-  .foto-secundaria {
+}
+
+.foto-secundaria {
     height: 120px;
     width: auto;
     object-fit: contain;
@@ -86,14 +101,24 @@
     transition: transform 0.3s ease-in-out; /* Transición suave */
     border: 2px solid transparent; /* Bordes transparentes por defecto */
     box-shadow: none; /* Sin sombra por defecto */
-  }
-  
-  .foto-secundaria.active {
+}
+
+.foto-secundaria.active {
     border-color: black; /* Borde negro cuando es la imagen principal */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra negra */
-  }
-  
-  .foto-secundaria:hover {
+}
+
+.foto-secundaria:hover {
     transform: scale(1.05); /* Efecto de agrandamiento al pasar el mouse */
-  }
-  
+}
+
+.rating-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.average-rating {
+    font-size: 1.2em;
+    color: blue;
+}

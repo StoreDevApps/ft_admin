@@ -4,11 +4,14 @@ import { Product } from '../../../models/Product';
 import { CommonModule } from '@angular/common';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { ClienteService } from '../../../services/client/cliente.service';
+import { DividerModule } from 'primeng/divider';
+import { RatingModule } from 'primeng/rating';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-product',
   standalone: true,
-  imports: [CommonModule, ScrollPanelModule],
+  imports: [CommonModule, ScrollPanelModule, DividerModule,RatingModule, FormsModule],
   templateUrl: './user-product.component.html',
   styleUrls: ['./user-product.component.scss']
 })
@@ -17,6 +20,7 @@ export class UserProductComponent implements OnInit {
   fotoPrincipal: string | undefined;
   images: string[] = [];
   videos: string[] = [];
+  localRating: number | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,8 +31,22 @@ export class UserProductComponent implements OnInit {
   ngOnInit(): void {
     this.product = history.state.product as Product;
     if (this.product) {
+      this.localRating = this.product.average_rating;
       this.loadImages();
-      this.videos = this.product.videos; // Asumiendo que los videos no necesitan ser transformados
+      this.videos = this.product.videos;
+      this.loadProductRatings();
+    }
+  }
+
+  loadProductRatings(): void {
+    if (this.product?.id) {
+      this.clienteService.getProduct(this.product.id).subscribe((data: any) => {
+        if (this.product) {
+          this.product.average_rating = data.average_rating;
+          this.product.rating_count = data.rating_count;
+          this.localRating = this.product.average_rating;
+        }
+      });
     }
   }
   

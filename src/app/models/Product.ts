@@ -11,4 +11,6 @@ export interface Product {
     images: string[];
     videos: string[];
     price: number;
+    average_rating?: number; 
+    rating_count?: number;  
   }  

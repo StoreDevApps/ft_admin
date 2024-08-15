@@ -17,7 +17,26 @@
     </div>
     
     <div class="informacion-producto-container">
-      <!-- Otros contenidos que vayan en esta sección -->
+        <div class="detalles-producto-container">
+            <h2>{{ product?.detail }} - {{ product?.presentation }}</h2>
+            
+            <div class="rating-container">
+                <p-rating [ngModel]="product?.average_rating || 0" [readonly]="true" [cancel]="false" stars="5"></p-rating>
+                <span class="average-rating">{{ (product?.average_rating || 0) | number:'1.1-1' }}</span>
+            </div>
+            
+            <p *ngIf="product!.rating_count && product!.rating_count > 0; else noRating">
+                {{ product!.rating_count }} calificacion(es)
+            </p>
+            
+            <ng-template #noRating>
+                <p><em>No hay calificaciones</em></p>
+            </ng-template>
+        
+            <p-divider></p-divider>
+        </div>          
+      <div class="comentarios-producto-container">
+        <!-- Aquí irán los comentarios del producto -->
+      </div>
     </div>
-  </div>
-  
+</div>
