@@ -1,11 +1,84 @@
-.container{
-    width: 100vh;
-    height: 80vh;
+.servicios-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .servicios-container h2 {
+    color: #c2185b;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+    font-weight: bold;
+    font-size: 2.5rem;
+  }
+
+  h3{
+    color: #5d3945;
+    font-size: 1.5rem;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+  }
+  
+  .servicio {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+  }
+  
+  .servicio-bancario {
+    flex-direction: row;
+  }
+  
+  .western-union {
+    flex-direction: row-reverse;
+  }
+  
+  .text-container {
+    flex: 1;
+    margin-right: 20px;
+  }
+  
+  .image-container {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex: 1;
+  }
+  
+  .image-container img {
+    max-width: 180px;
+    height: auto;
+  }
+  
+  .servicio-imagen {
+    max-width: 150px; 
+    height: auto;
+  }
+  
+  .p-accordion .p-accordion-header .p-accordion-header-text {
+    color: gray; 
+    text-decoration: none; 
+  }
+  
+  .p-accordion .p-accordion-header .p-accordion-header-link {
+    color: gray; 
+    text-decoration: none; 
+  }
+  
+  .p-accordion .p-accordion-header .p-accordion-header-link:hover {
+    text-decoration: none; 
+  }
+  .p-accordion .p-accordion-content a {
+    color: gray; 
+  }
 
-    p{
-        font-size: x-large;
-    }
-}
+  .servicio a {
+    color: gray !important; 
+    text-decoration: none !important; 
+  }
