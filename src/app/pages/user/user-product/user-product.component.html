@@ -1,138 +1,160 @@
 <div class="main-container">
     <div class="multimedia-container">
-      <div class="foto-principal-container">
-        <img *ngIf="images.length > 0" [src]="images[0]" alt="Foto Principal" class="foto-principal">
-      </div>
-  
-      <div class="resto-fotos-container" *ngIf="images.length > 1">
-        <div class="fotos-content">
-          <img *ngFor="let image of images" [src]="image" alt="Foto Secundaria" class="foto-secundaria"
-            (mouseenter)="cambiarFotoPrincipal(image)">
+        <div class="foto-principal-container">
+            <img *ngIf="images.length > 0" [src]="images[0]" alt="Foto Principal" class="foto-principal">
         </div>
-      </div>
   
-      <div class="videos-container" *ngIf="videos.length > 0">
-        <label (mouseenter)="handleMouseEnter()" class="video-label">Ver videos</label>
-      </div>
+        <div class="resto-fotos-container" *ngIf="images.length > 1">
+            <div class="fotos-content">
+                <img *ngFor="let image of images" [src]="image" alt="Foto Secundaria" class="foto-secundaria"
+                    (mouseenter)="cambiarFotoPrincipal(image)">
+            </div>
+        </div>
+  
+        <div class="videos-container" *ngIf="videos.length > 0">
+            <label (mouseenter)="handleMouseEnter()" class="video-label">Ver videos</label>
+        </div>
     </div>
   
     <div class="informacion-producto-container">
-      <div class="detalles-producto-container">
-        <h2>{{ product?.detail }} - {{ product?.presentation }}</h2>
+        <div class="detalles-producto-container">
+            <h2>{{ product?.detail }} - {{ product?.presentation }}</h2>
   
-        <div class="rating-container">
-          <p-rating [ngModel]="product?.average_rating || 0" [readonly]="true" [cancel]="false" stars="5"></p-rating>
-          <span class="average-rating">{{ (product?.average_rating || 0) | number:'1.1-1' }}</span>
-        </div>
-  
-        <p *ngIf="product!.rating_count && product!.rating_count > 0; else noRating">
-          {{ product!.rating_count }} calificacion(es)
-        </p>
-  
-        <ng-template #noRating>
-          <p><em>No hay calificaciones</em></p>
-        </ng-template>
-  
-        <p-divider></p-divider>
-  
-        <h3 class="price-subtitle">PRECIO: ${{ product?.price }}</h3>
-  
-        <div class="cart-controls">
-          <span class="cart-message">Artículos en carrito:</span>
-          <button class="icon-button" (click)="decreaseQuantity()">
-            <i class="pi pi-minus-circle"></i>
-          </button>
-          <input type="number" [(ngModel)]="cartQuantity" [readonly]="true" class="quantity-spinner">
-          <button class="icon-button" (click)="increaseQuantity()">
-            <i class="pi pi-plus-circle"></i>
-          </button>
-        </div>
-  
-        <p-panel [toggleable]="true">
-          <ng-template pTemplate="header">
-            <div class="flex align-items-center gap-2">
-              <span class="font-bold">Sobre este artículo</span>
+            <div class="rating-container">
+                <p-rating [ngModel]="product?.average_rating || 0" [readonly]="true" [cancel]="false" stars="5"></p-rating>
+                <span class="average-rating">{{ (product?.average_rating || 0) | number:'1.1-1' }}</span>
             </div>
-          </ng-template>
-          <p class="m-0">
-            Marca: {{ product?.brand }} <br>
-            Categoria: {{ product?.category }} <br>
-            Descripcion: {{ product?.detail }}
-          </p>
-        </p-panel>
-      </div>
-      <div class="comentarios-producto-container">
-        <div class="custom-divider">
-          <b>Comentarios</b>
+  
+            <p *ngIf="product!.rating_count && product!.rating_count > 0; else noRating">
+                {{ product!.rating_count }} calificacion(es)
+            </p>
+  
+            <ng-template #noRating>
+                <p><em>No hay calificaciones</em></p>
+            </ng-template>
+  
+            <p-divider></p-divider>
+  
+            <h3 class="price-subtitle">PRECIO: ${{ product?.price }}</h3>
+  
+            <div class="cart-controls">
+                <span class="cart-message">Artículos en carrito:</span>
+                <button class="icon-button" (click)="decreaseQuantity()">
+                    <i class="pi pi-minus-circle"></i>
+                </button>
+                <input type="number" [(ngModel)]="cartQuantity" [readonly]="true" class="quantity-spinner">
+                <button class="icon-button" (click)="increaseQuantity()">
+                    <i class="pi pi-plus-circle"></i>
+                </button>
+            </div>
+  
+            <p-panel [toggleable]="true">
+                <ng-template pTemplate="header">
+                    <div class="flex align-items-center gap-2">
+                        <span class="font-bold">Sobre este artículo</span>
+                    </div>
+                </ng-template>
+                <p class="m-0">
+                    Marca: {{ product?.brand }} <br>
+                    Categoria: {{ product?.category }} <br>
+                    Descripcion: {{ product?.detail }}
+                </p>
+            </p-panel>
         </div>
+        <div class="comentarios-producto-container">
+            <div class="custom-divider">
+                <b>Comentarios</b>
+            </div>
 
-        <!-- Check if there are no comments at all -->
-        <div *ngIf="comments.length === 0 && !userHasCommented" class="no-comments">
-          <p>No hay comentarios.</p>
-        </div>
-  
-        <!-- User's own comment -->
-        <div *ngIf="userHasCommented" class="comment-container">
-          <div class="comment-header">
-            <div class="user-rating">
-              <span class="comment-user">{{ userComment?.name }}</span>
-              <p-rating [(ngModel)]="localRating" stars="5" readonly="true" [cancel]="false" styleClass="gold-stars"></p-rating>
+            <!-- Check if there are no comments at all -->
+            <div *ngIf="comments.length === 0 && !userHasCommented" class="no-comments">
+                <p>No hay comentarios.</p>
             </div>
-            <div class="comment-meta">
-              <span>{{ userComment?.updatedAt | date:'dd/MM/yyyy hh:mm' }}</span>
-              <button pButton class="p-button-rounded p-button-text" (click)="editComment()">Editar</button>
-            </div>
-          </div>
-          <div class="comment-body">
-            <p>{{ userComment?.comment }}</p>
-          </div>
-        </div>
 
-        <!-- Divider between user's comment and others -->
-        <div *ngIf="userHasCommented && comments.length > 0" class="custom-divider"></div>
+            <!-- Display the inplace editor if the user has purchased but not commented -->
+            <p-inplace *ngIf="userHasPurchased && !userHasCommented" closable="closable" (onClose)="closeInplace()" styles="margin-bottom: 20px;">
+                <ng-template pTemplate="display">
+                    <div class="NO se">   </div>
+                    <span >Agregar un comentario...</span>
+                </ng-template>
+                <ng-template pTemplate="content">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="rating" class="form-label">Puntuación:</label>
+                            <p-rating [(ngModel)]="commentRating" stars="5"  [cancel]="false" ></p-rating>
+                        </div>
+                        <div class="mb-3">
+                            <label for="comment" class="form-label">Comentario:</label>
+                            <textarea [(ngModel)]="localComment" class="form-control" id="comment" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">                        
+                        <button type="button" class="btn btn-primary" (click)="submitComment()">Comentar</button>
+                    </div>
+                </ng-template>
+            </p-inplace>
   
-        <!-- All other comments -->
-        <div *ngFor="let comment of comments" class="comment-container">
-          <div class="comment-header">
-            <div class="user-rating">
-              <span class="comment-user">{{ comment.user_name }}</span>
-              <p-rating [ngModel]="comment.rating" stars="5" readonly="true" [cancel]="false" styleClass="gold-stars"></p-rating>
+            <!-- User's own comment -->
+            <div *ngIf="userHasCommented" class="comment-container">
+                <div class="comment-header">
+                    <div class="user-rating">
+                        <span class="comment-user">{{ userComment?.name }}</span>
+                        <p-rating [(ngModel)]="localRating" stars="5" readonly="true" [cancel]="false" styleClass="gold-stars"></p-rating>
+                    </div>
+                    <div class="comment-meta">
+                        <span>{{ userComment?.updatedAt | date:'dd/MM/yyyy hh:mm' }}</span>
+                        <button pButton class="p-button-rounded p-button-text" (click)="editComment()">Editar</button>
+                    </div>
+                </div>
+                <div class="comment-body">
+                    <p>{{ userComment?.comment }}</p>
+                </div>
             </div>
-            <div class="comment-meta">
-              <span>{{ comment.updatedAt | date:'dd/MM/yyyy hh:mm' }}</span>
+
+            <!-- Divider between user's comment and others -->
+            <div *ngIf="userHasCommented && comments.length > 0" class="custom-divider"></div>
+  
+            <!-- All other comments -->
+            <div *ngFor="let comment of comments" class="comment-container">
+                <div class="comment-header">
+                    <div class="user-rating">
+                        <span class="comment-user">{{ comment.user_name }}</span>
+                        <p-rating [ngModel]="comment.rating" stars="5" readonly="true" [cancel]="false" styleClass="gold-stars"></p-rating>
+                    </div>
+                    <div class="comment-meta">
+                        <span>{{ comment.updatedAt | date:'dd/MM/yyyy hh:mm' }}</span>
+                    </div>
+                </div>
+                <div class="comment-body">
+                    <p>{{ comment.comment }}</p>
+                </div>
             </div>
-          </div>
-          <div class="comment-body">
-            <p>{{ comment.comment }}</p>
-          </div>
         </div>
-      </div>
     </div>
   
     <!-- Modal para editar comentario -->
     <div *ngIf="displayEditModal" class="modal" tabindex="-1" style="display: block;">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Editar Comentario</h5>
-            <button type="button" class="btn-close" aria-label="Close" (click)="closeEditModal()"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label for="rating" class="form-label">Puntuación:</label>
-              <p-rating [(ngModel)]="localRating" stars="5"></p-rating>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Comentario</h5>
+                    <button type="button" class="btn-close" aria-label="Close" (click)="closeEditModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">Puntuación:</label>
+                        <p-rating [(ngModel)]="localRating" stars="5" ></p-rating>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">Comentario:</label>
+                        <textarea [(ngModel)]="localComment" class="form-control" id="comment" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">                    
+                    <button type="button" class="btn btn-primary" (click)="saveEditedComment()">Guardar Cambios</button>
+                </div>
             </div>
-            <div class="mb-3">
-              <label for="comment" class="form-label">Comentario:</label>
-              <textarea [(ngModel)]="localComment" class="form-control" id="comment" rows="3"></textarea>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cancelar</button>
-            <button type="button" class="btn btn-primary" (click)="saveEditedComment()">Guardar Cambios</button>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-  <p-toast></p-toast>  
+</div>
+<p-toast></p-toast>

@@ -11,7 +11,7 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { PanelModule } from 'primeng/panel';
 import { EditorModule } from 'primeng/editor';
-import { HttpParams } from '@angular/common/http';
+import { InplaceModule } from 'primeng/inplace';
 
 @Component({
   selector: 'app-user-product',
@@ -24,6 +24,7 @@ import { HttpParams } from '@angular/common/http';
     FormsModule,
     ToastModule,
     PanelModule,
+    InplaceModule,
     EditorModule,
   ],
   templateUrl: './user-product.component.html',
@@ -44,6 +45,7 @@ export class UserProductComponent implements OnInit {
   userHasCommented: boolean = false;
   userComment: any = null;
   localComment: string = '';
+  commentRating: number | undefined;  // <- Nueva variable para el rating del comentario
 
   constructor(
     private router: Router,
@@ -55,6 +57,7 @@ export class UserProductComponent implements OnInit {
     this.product = history.state.product as Product;
     if (this.product) {
       this.localRating = this.product.average_rating;
+      this.commentRating = undefined;
       this.loadImages();
       this.videos = this.product.videos;
       this.loadProductRatings();
@@ -166,20 +169,27 @@ export class UserProductComponent implements OnInit {
   }
 
   submitComment(): void {
-    if (this.localRating && this.localComment && this.product?.id) {
-      this.clienteService
-        .submitComment(this.product.id, this.localRating, this.localComment)
-        .subscribe(
-          (response) => {
-            if (this.product) this.loadComments();
-          },
-          (error) => {
-            // Manejar error
-          }
-        );
+    if (this.commentRating && this.localComment && this.product?.id) {
+      this.clienteService.submitComment(this.product.id, this.commentRating, this.localComment)
+        .subscribe(response => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Comentario añadido',
+            detail: 'Tu comentario ha sido añadido correctamente.',
+            life: 3000
+          });
+          this.loadComments(); // Vuelve a cargar los comentarios para reflejar los cambios
+          this.closeInplace(); // Cierra el inplace después de comentar
+        }, error => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Hubo un problema al añadir tu comentario.',
+            life: 3000
+          });
+        });
     }
   }
-
   updateComment(): void {
     if (this.localRating && this.localComment && this.product?.id) {
       this.clienteService
@@ -207,9 +217,12 @@ export class UserProductComponent implements OnInit {
           this.localRating = this.userComment.rating;
         }
       });
+
+      this.clienteService.userHasPurchased(productId).subscribe(purchased => {
+        this.userHasPurchased = purchased;
+      });
     }
   }
-
 
 
   closeEditModal(): void {
@@ -257,6 +270,14 @@ export class UserProductComponent implements OnInit {
         );
     }
   }
+
+
+
+  closeInplace(): void {
+    this.commentRating = undefined;
+    this.localComment = '';
+  }
+
 
   loadCartQuantity(): void {
     // Implementar la lógica para cargar la cantidad del carrito

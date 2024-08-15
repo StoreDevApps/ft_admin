@@ -68,6 +68,9 @@ export class ClienteService {
     });
   }
   
+  userHasPurchased(productId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/products/${productId}/has-purchased`);
+}
 
 }
 
