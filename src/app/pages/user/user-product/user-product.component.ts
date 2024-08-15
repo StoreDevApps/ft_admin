@@ -194,25 +194,24 @@ export class UserProductComponent implements OnInit {
         );
     }
   }
-  
+
   loadComments(): void {
     const productId = this.product?.id;
     if (productId) {
-        const params = new HttpParams().set('timestamp', new Date().getTime().toString());
-        this.clienteService.getProductComments(productId, params).subscribe((data) => {
-            console.log('Comments data:', data); // Debug: Verifica los datos de los comentarios
-            this.comments = data.comments;
-            this.userHasCommented = data.user_has_commented;
-            this.userComment = data.user_comment;
+      this.clienteService.getProductComments(productId).subscribe(data => {
+        this.comments = data.comments;
+        this.userHasCommented = data.user_has_commented;
+        this.userComment = data.user_comment;
 
-            if (this.userHasCommented && this.userComment) {
-                this.localRating = this.userComment.rating;
-            }
-        });
+        if (this.userHasCommented && this.userComment) {
+          this.localRating = this.userComment.rating;
+        }
+      });
     }
-}
+  }
 
-  
+
+
   closeEditModal(): void {
     this.displayEditModal = false;
   }
@@ -227,7 +226,7 @@ export class UserProductComponent implements OnInit {
       rating: this.localRating,
       comment: this.localComment
     });
-  
+
     if (this.product?.id && this.localRating && this.localComment) {
       this.clienteService
         .updateComment(this.product.id, this.localRating, this.localComment)
@@ -239,12 +238,12 @@ export class UserProductComponent implements OnInit {
               detail: 'Tu comentario ha sido actualizado correctamente.',
               life: 3000,
             });
-  
+
             this.userComment = response;
             this.localRating = this.userComment.puntuacion;
             this.localComment = this.userComment.comentario;
-  
-            this.loadComments(); 
+
+            this.loadComments();
             this.closeEditModal();
           },
           (error) => {
@@ -258,7 +257,7 @@ export class UserProductComponent implements OnInit {
         );
     }
   }
-  
+
   loadCartQuantity(): void {
     // Implementar la lógica para cargar la cantidad del carrito
   }

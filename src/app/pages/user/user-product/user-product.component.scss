@@ -15,10 +15,14 @@
     background-color: #e0e0e0;
     flex: 2.5;
     max-width: 50%;
-    height: auto;
+    height: 200%;
     align-items: flex-start;
     justify-content: flex-start;
     overflow: hidden;
+    max-height: 100%; 
+    /* Evita que el contenedor de multimedia crezca más allá del contenedor principal */
+    overflow-y: auto;
+    box-sizing: border-box;
 }
 
 .informacion-producto-container {

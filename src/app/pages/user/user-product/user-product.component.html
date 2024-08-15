@@ -1,4 +1,3 @@
-  
 <div class="main-container">
     <div class="multimedia-container">
       <div class="foto-principal-container">
@@ -66,7 +65,13 @@
         <div class="custom-divider">
           <b>Comentarios</b>
         </div>
+
+        <!-- Check if there are no comments at all -->
+        <div *ngIf="comments.length === 0 && !userHasCommented" class="no-comments">
+          <p>No hay comentarios.</p>
+        </div>
   
+        <!-- User's own comment -->
         <div *ngIf="userHasCommented" class="comment-container">
           <div class="comment-header">
             <div class="user-rating">
@@ -82,9 +87,11 @@
             <p>{{ userComment?.comment }}</p>
           </div>
         </div>
+
+        <!-- Divider between user's comment and others -->
+        <div *ngIf="userHasCommented && comments.length > 0" class="custom-divider"></div>
   
-        <div class="custom-divider"></div>
-  
+        <!-- All other comments -->
         <div *ngFor="let comment of comments" class="comment-container">
           <div class="comment-header">
             <div class="user-rating">
@@ -102,31 +109,30 @@
       </div>
     </div>
   
+    <!-- Modal para editar comentario -->
     <div *ngIf="displayEditModal" class="modal" tabindex="-1" style="display: block;">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Editar Comentario</h5>
-              <button type="button" class="btn-close" aria-label="Close" (click)="closeEditModal()"></button>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Editar Comentario</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="closeEditModal()"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="rating" class="form-label">Puntuación:</label>
+              <p-rating [(ngModel)]="localRating" stars="5"></p-rating>
             </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                  <label for="rating" class="form-label">Puntuación:</label>
-                  <p-rating [(ngModel)]="localRating" stars="5"></p-rating>
-                </div>
-                <div class="mb-3">
-                  <label for="comment" class="form-label">Comentario:</label>
-                  <textarea [(ngModel)]="localComment" class="form-control" id="comment" rows="3"></textarea>
-                </div>
-              </div>
-              
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cancelar</button>
-              <button type="button" class="btn btn-primary" (click)="saveEditedComment()">Guardar Cambios</button>
+            <div class="mb-3">
+              <label for="comment" class="form-label">Comentario:</label>
+              <textarea [(ngModel)]="localComment" class="form-control" id="comment" rows="3"></textarea>
             </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cancelar</button>
+            <button type="button" class="btn btn-primary" (click)="saveEditedComment()">Guardar Cambios</button>
           </div>
         </div>
       </div>
-      
+    </div>
   </div>
   <p-toast></p-toast>  
