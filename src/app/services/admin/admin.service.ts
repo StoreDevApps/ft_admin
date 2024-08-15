@@ -121,4 +121,38 @@ export class AdminService {
       email,
     });
   }
+  getListadoProductos(): Observable<any> {
+    return this.http.get<any>(`${this.base_url}api/admin/products/`);
+  }
+
+  postProduct(Product: any): Observable<any> {
+    return this.http.post<any>(`${this.base_url}api/admin/products/`, Product);
+  }
+
+  putProduct(Product: any): Observable<any> {
+    return this.http.put<any>(`${this.base_url}api/admin/products/`, Product);
+  }
+
+  postImagenesProduct(product_id: any, files: File[]): Observable<any> {
+    const formData = new FormData();
+    formData.append('product_id', JSON.stringify(product_id));
+    files.forEach((image) => {
+      formData.append('images[]', image);
+    });
+    return this.http.post<any>(
+      `${this.base_url}api/admin/product-images/`,
+      formData
+    );
+  }
+
+  deleteProduct(product: any): Observable<any> {
+    return this.http.delete<any>(`${this.base_url}api/admin/products/`, {
+      body: { id: product.id },
+    });
+  }
+
+  deleteImageProduct(productId: number, imageUrl: string): Observable<any> {
+    return this.http.delete(`${this.base_url}api/products/${productId}/images/`, { body: { url: imageUrl } });
+  }
+
 }

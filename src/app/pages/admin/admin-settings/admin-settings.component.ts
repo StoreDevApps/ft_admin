@@ -262,16 +262,13 @@ export class AdminSettingsComponent {
       this.categoriesServices.filter((c) => c.name === this.newService.category)
         .length < 1
     ) {
-      console.log('Categoría no existe');
-      console.log(this.newService.category);
       this.adminservice
         .postAdminCategoriesServices(this.newService.category)
         .subscribe({
           next: (data) => {
             if (data.success) {
-              console.log(data);
-              this.closeNewServiceDialog();
               this.sendNewService();
+              this.closeNewServiceDialog();
             }
           },
           error: (error) => {
