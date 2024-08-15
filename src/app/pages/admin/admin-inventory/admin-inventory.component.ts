@@ -113,6 +113,11 @@ export class AdminInventoryComponent {
     this.loading = false;
 }
 
+  cargarProductos() {
+    // Lógica para cargar los registros de inventario
+    console.log('Cargar registros de inventario');
+  }
+
   crearNuevoRegistro() {
     // Lógica para crear un nuevo registro de inventario
     console.log('Crear nuevo registro de inventario');

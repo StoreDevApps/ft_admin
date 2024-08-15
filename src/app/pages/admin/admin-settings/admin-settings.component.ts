@@ -169,6 +169,7 @@ export class AdminSettingsComponent {
       next: (data) => {
         if (data.success) {
           this.services = data.services;
+          console.log(this.services);
           this.adminservice.getAdminCategoriesServices().subscribe({
             next: (data) => {
               if (data.success) {
