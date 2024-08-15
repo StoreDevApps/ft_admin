@@ -14,6 +14,8 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputTextModule } from 'primeng/inputtext';
 import { DividerModule } from 'primeng/divider';
 import { PaginatorModule } from 'primeng/paginator';
+import { Product } from '../../../models/Product'; 
+
 
 @Component({
   selector: 'app-user-products',
@@ -38,13 +40,14 @@ export class UserProductsComponent implements OnInit {
   selectedSortOption: any = null;
 
   searchQuery: string = '';
-
-  products: any[] = [];
+  
   totalProducts: number = 0;
   pageSize: number = 10;
   currentPage: number = 1;
 
-  cartItems: any[] = [];
+  products: Product[] = [];  // Cambiar de 'any[]' a 'Product[]'
+  cartItems: Product[] = [];  // Cambiar de 'any[]' a 'Product[]'
+  
   isCartOpen: boolean = false;
 
   constructor(
@@ -62,11 +65,10 @@ export class UserProductsComponent implements OnInit {
     this.loadOptions();
     this.loadPage(this.currentPage);
   }
-
-  addToCart(product: any): void {
+  addToCart(product: Product): void {  // Cambiar de 'any' a 'Product'
     this.cartItems.push(product);
   }
-
+  
   toggleCart(): void {
     this.isCartOpen = !this.isCartOpen;
   }
@@ -93,23 +95,21 @@ export class UserProductsComponent implements OnInit {
   }
 
   loadPage(page: number): void {
-    const filters = this.buildFilters();
-    console.log('Filters applied:', filters);  // Verifica los filtros construidos
+    const filters = this.buildFilters();   
 
     this.clienteService.getProducts(page, this.pageSize, filters).subscribe((response) => {
-        if (response.success) {
-            this.products = response.products;
-            this.loadImagesForProducts();
-            this.totalProducts = response.total_pages * this.pageSize;
-            this.currentPage = page;
-        } else {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los productos', life: 3000 });
-        }
+      if (response.success) {
+        this.products = response.products;
+        this.loadImagesForProducts();
+        this.totalProducts = response.total_pages * this.pageSize;
+        this.currentPage = page;
+      } else {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los productos', life: 3000 });
+      }
     }, error => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error en la solicitud de productos', life: 3000 });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error en la solicitud de productos', life: 3000 });
     });
-}
-
+  }
 
   buildFilters(): any {
     const trimmedQuery = this.searchQuery.trim().toLowerCase();
@@ -132,7 +132,7 @@ export class UserProductsComponent implements OnInit {
       searchQuery: trimmedQuery,
       sortOption: this.selectedSortOption,
     };
-}
+  }
 
 
   loadImagesForProducts(): void {
@@ -141,14 +141,14 @@ export class UserProductsComponent implements OnInit {
         this.clienteService.getImage(product.images[0]).subscribe(imageBlob => {
           const reader = new FileReader();
           reader.onload = () => {
-            product.image = reader.result as string;
+            product.images[0] = reader.result as string;  // Asignar la imagen cargada al primer elemento del array
           };
           reader.readAsDataURL(imageBlob);
         }, error => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar la imagen del producto', life: 3000 });
         });
       }
-    });
+    });    
   }
 
   onPageChange(event: any): void {
@@ -210,7 +210,8 @@ export class UserProductsComponent implements OnInit {
   }
 
   handleSearch(): void {
-    this.applyFilters(); // Aplica la búsqueda con el nuevo término sin borrar otros filtros
+    this.clearFilters();
+    this.clearFiltersPrevios(); // Aplica la búsqueda borrando los filstros previos
   }
 
   onSortChange(event: any): void {
@@ -218,14 +219,39 @@ export class UserProductsComponent implements OnInit {
     this.applyFilters(); // Recargar productos desde la primera página con la nueva opción de ordenamiento
   }
 
-  clearFilters(): void {
+  clearFiltersPrevios(){
     this.selectedCategories = {};
     this.selectedCategoryIds = [];
     this.minPrice = '';
     this.maxPrice = '';
     this.priceOption = '';
     this.selectedSortOption = null;
+  }
+
+  clearFilters(): void {   
+    this.clearFiltersPrevios();
     this.searchQuery = '';
-    this.loadPage(1); // Recargar productos desde la primera página sin filtros
+    this.loadPage(1); 
+  }
+
+  goToProductDetail(product: Product): void {
+    const categoria = encodeURIComponent(product.category);
+    const nombre = encodeURIComponent(product.detail);
+    this.router.navigate([`/usuario/detalle-producto/${categoria}/${nombre}`], { state: { product: product } });
+  }
+
+  getProductImage(product: Product): string | undefined {
+    if (product.images && product.images.length > 0 && typeof product.images[0] !== 'string') {
+      this.clienteService.getImage(product.images[0]).subscribe(imageBlob => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          product.images[0] = reader.result as string;  // Asignar la imagen cargada al primer elemento del array
+        };
+        reader.readAsDataURL(imageBlob);
+      }, error => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar la imagen del producto', life: 3000 });
+      });
+    }
+    return product.images[0] as string;  // Retornar la imagen si ya está cargada, o undefined si no lo está
   }
 }

@@ -1,0 +1,23 @@
+<div class="main-container">
+    <div class="multimedia-container">
+      <div class="foto-principal-container">
+        <img *ngIf="images.length > 0" [src]="images[0]" alt="Foto Principal" class="foto-principal">
+      </div>
+      
+      <div class="resto-fotos-container" *ngIf="images.length > 1">
+        <div class="fotos-content">
+          <img *ngFor="let image of images" [src]="image" alt="Foto Secundaria" class="foto-secundaria" (mouseenter)="cambiarFotoPrincipal(image)">
+        </div>
+      </div>
+  
+      <div class="videos-container" *ngIf="videos.length > 0">
+        <label (mouseenter)="handleMouseEnter()" class="video-label">Ver videos</label>
+        <!-- Aquí puedes agregar la lógica para mostrar los videos -->
+      </div>
+    </div>
+    
+    <div class="informacion-producto-container">
+      <!-- Otros contenidos que vayan en esta sección -->
+    </div>
+  </div>
+  

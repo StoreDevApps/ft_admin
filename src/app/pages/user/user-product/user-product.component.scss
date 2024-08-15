@@ -1,0 +1,99 @@
+.main-container {
+    display: flex;
+    flex-direction: row;
+    height: calc(99.55vh - 60px);
+    width: 100%;
+    box-sizing: border-box;
+    gap: 10px;
+    overflow-y: auto;
+}
+
+.multimedia-container {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    background-color: #e0e0e0;
+    flex: 2.5;
+    max-width: 50%; /* Limita el ancho máximo para evitar la expansión */
+    height: 100%;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow: hidden; /* Evita que el contenido desborde el contenedor */
+}
+
+
+.informacion-producto-container {
+    flex: 9;
+    /* Ajusta la relación de flex aquí */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+
+.resto-fotos-container {
+    justify-content: center;
+    max-height: 160px;
+    width: 100%;
+    overflow-x: auto; /* Activa el scroll horizontal */
+    overflow-y: hidden; /* Oculta el scroll vertical */
+    margin-bottom: 10px;
+    flex-shrink: 0; /* Evita que el contenedor de fotos se reduzca */
+    padding: 10px;
+    white-space: nowrap; /* Asegura que todo el contenido se mantenga en una sola línea */
+}
+
+.fotos-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap; /* Evita que las imágenes se envuelvan, forzando el scroll horizontal */
+    white-space: nowrap; /* Asegura que las imágenes no se envuelvan */
+}
+
+.foto-principal-container {
+    width: 90%;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    /* Borde negro con sombra para la imagen principal */
+    &.active {
+      border: 2px solid black;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 5px;
+      background-color: white; /* Fondo blanco para que el borde se vea mejor */
+    }
+  }
+  
+  .foto-principal {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease-in-out; /* Efecto de transición suave */
+  }
+  
+  .foto-secundaria {
+    height: 120px;
+    width: auto;
+    object-fit: contain;
+    margin-right: 10px;
+    display: inline-block;
+    cursor: pointer; /* Indica que es interactivo */
+    transition: transform 0.3s ease-in-out; /* Transición suave */
+    border: 2px solid transparent; /* Bordes transparentes por defecto */
+    box-shadow: none; /* Sin sombra por defecto */
+  }
+  
+  .foto-secundaria.active {
+    border-color: black; /* Borde negro cuando es la imagen principal */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra negra */
+  }
+  
+  .foto-secundaria:hover {
+    transform: scale(1.05); /* Efecto de agrandamiento al pasar el mouse */
+  }
+  

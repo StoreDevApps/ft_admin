@@ -19,29 +19,29 @@ export class ClienteService {
 
   getProducts(page: number, pageSize: number, filters: any): Observable<any> {
     let params = new HttpParams()
-        .set('page', page.toString())
-        .set('page_size', pageSize.toString());
+      .set('page', page.toString())
+      .set('page_size', pageSize.toString());
 
     if (filters.categories && filters.categories.length > 0) {
-        params = params.set('categories', filters.categories.join(','));
+      params = params.set('categories', filters.categories.join(','));
     }
     if (filters.minPrice) {
-        params = params.set('minPrice', filters.minPrice);
+      params = params.set('minPrice', filters.minPrice);
     }
     if (filters.maxPrice) {
-        params = params.set('maxPrice', filters.maxPrice);
+      params = params.set('maxPrice', filters.maxPrice);
     }
     if (filters.searchQuery) {
-        params = params.set('searchQuery', filters.searchQuery);
+      params = params.set('searchQuery', filters.searchQuery);
     }
     if (filters.sortOption) {
-        params = params.set('sortOption', filters.sortOption);
+      params = params.set('sortOption', filters.sortOption);
     }
 
     return this.http.get(`${this.apiUrl}/products-pagination/`, { params });
-}
+  }
 
-  
+
   getImage(imagePath: string): Observable<Blob> {
     const imageUrl = `${this.apiUrl}${imagePath}`;
     return this.http.get(imageUrl, { responseType: 'blob' });
