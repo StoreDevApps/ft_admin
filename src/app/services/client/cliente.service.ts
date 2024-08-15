@@ -49,5 +49,25 @@ export class ClienteService {
     const imageUrl = `${this.apiUrl}${imagePath}`;
     return this.http.get(imageUrl, { responseType: 'blob' });
   }
+
+  getProductComments(productId: number, params?: HttpParams): Observable<any> {
+    return this.http.get(`${this.apiUrl}/products/${productId}/comments/`, { params });
+}
+
+  submitComment(productId: number, rating: number, comment: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/products/${productId}/comments/submit`, {
+      rating,
+      comment
+    });
+  }
+
+  updateComment(productId: number, rating: number, comment: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/products/${productId}/comments/update`, {
+      puntuacion: rating, 
+      comentario: comment 
+    });
+  }
+  
+
 }
 
