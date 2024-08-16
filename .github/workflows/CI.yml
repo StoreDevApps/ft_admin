@@ -25,7 +25,7 @@ jobs:
       run: npm install
 
     - name: Build the Angular project
-      run: npm run build --prod
+      run: npm run build
 
     - name: Netlify Actions
       uses: nwtgck/actions-netlify@v3.0.0
