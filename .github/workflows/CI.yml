@@ -17,6 +17,10 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '20'
+        cache: "npm"
+
+    - name: Install Netlify
+      run: npm install netlify-cli@17.34.1 -g
 
     - name: Install dependencies
       run: npm install
@@ -25,9 +29,11 @@ jobs:
       run: npm run build --prod
 
     - name: Deploy to Netlify
-      uses: netlify/actions/cli@master
-      with:
-        args: deploy --dir=dist/store-admin/browser --prod
-      env:
-        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      id: netlify_deploy
+      run: |
+        netlify deploy \
+          --dir dist/store-admin/browser \
+          --site ${{ secrets.NETLIFY_SITE_ID }} \
+          --auth ${{ secrets.NETLIFY_API_TOKEN }}
+          --prod
+          
