@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { SignUpService } from '../../services/sign-up.service';
 import { Usuario } from '../../interface/usuario';
 import { LoadingComponent } from '../../componentes/loading/loading.component';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-sign-up',
