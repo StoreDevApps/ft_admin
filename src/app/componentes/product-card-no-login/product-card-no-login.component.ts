@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-product-card-no-login',
   standalone: true,
-  imports: [],
+  imports: [SkeletonModule],
   templateUrl: './product-card-no-login.component.html',
   styleUrl: './product-card-no-login.component.scss'
 })
