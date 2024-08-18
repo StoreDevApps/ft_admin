@@ -81,25 +81,12 @@ export class UserProductComponent implements OnInit {
   loadImages(): void {
     if (this.product?.images) {
       this.product.images.forEach((imagePath, index) => {
-        if (this.isBase64Image(imagePath)) {
-          this.images[index] = imagePath;
-          if (index === 0) {
-            this.fotoPrincipal = this.images[index];
-            this.setActiveImage(index);
-          }
-        } else {
-          this.clienteService.getImage(imagePath).subscribe((blob: Blob) => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-              this.images[index] = reader.result as string;
-              if (index === 0) {
-                this.fotoPrincipal = this.images[index];
-                this.setActiveImage(index);
-              }
-            };
-            reader.readAsDataURL(blob);
-          });
+        this.images[index] = imagePath;
+        if (index === 0) {
+          this.fotoPrincipal = imagePath;
+          this.setActiveImage(index);
         }
+
       });
     }
   }
@@ -190,6 +177,8 @@ export class UserProductComponent implements OnInit {
         });
     }
   }
+  
+
   updateComment(): void {
     if (this.localRating && this.localComment && this.product?.id) {
       this.clienteService

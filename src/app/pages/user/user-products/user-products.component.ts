@@ -152,16 +152,17 @@ export class UserProductsComponent implements OnInit {
 
   loadImagesForProducts(): void {
     this.products.forEach(product => {
-      if (product.images && product.images.length > 0) {
-        this.clienteService.getImage(product.images[0]).subscribe(imageBlob => {
+      if (product.images && product.images.length > 0) {        
+                
+        /*this.clienteService.getImage(product.images[0]).subscribe(imageBlob => {
           const reader = new FileReader();
           reader.onload = () => {
             product.images[0] = reader.result as string;  // Asignar la imagen cargada al primer elemento del array
-          };
+          };          
           reader.readAsDataURL(imageBlob);
         }, error => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar la imagen del producto', life: 3000 });
-        });
+          //this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar la imagen del producto', life: 3000 });
+        });*/
       }
     });    
   }

@@ -29,6 +29,5 @@ export class PublicProductsComponent {
         console.log(error);
       }
     })
-  }
-
+  }  
 }

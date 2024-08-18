@@ -15,8 +15,8 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of cartItems">
-          <td>{{ item.product_detail }}</td> <!-- Muestra el nombre del producto -->
-          <td>{{ item.price | currency }}</td> <!-- Muestra el precio -->
+          <td>{{ item.product_detail }}</td>
+          <td>{{ item.price | currency }}</td>
           <td>
             <div class="input-group">
               <button class="btn btn-outline-secondary" type="button" (click)="decreaseQuantity(item)">-</button>
@@ -24,11 +24,13 @@
               <button class="btn btn-outline-secondary" type="button" (click)="increaseQuantity(item)">+</button>
             </div>
           </td>
-          <td>{{ item.price * item.cantidad | currency }}</td> <!-- Muestra el total -->
+          <td>{{ item.price * item.cantidad | currency }}</td>
           <td>
-            <button class="btn btn-danger" (click)="removeItem(item)"><i class="pi pi-times"></i></button>
+            <button class="btn btn-danger" (click)="removeItem(item)">
+              <i class="pi pi-times"></i>
+            </button>
           </td>
-        </tr>
+        </tr>                   
       </tbody>
     </table>
 
