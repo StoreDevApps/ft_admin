@@ -1,85 +1,251 @@
 <div class="container my-5">
-    <!-- Label y Select centrados -->
-    <div class="row justify-content-center mb-4">
-      <div class="col-md-6 text-center">
-        <label for="productCode" class="form-label fs-4">Código del Producto</label>
-        <p-autoComplete 
-          [(ngModel)]="selectedCode" 
-          [suggestions]="filteredCodes" 
-          (completeMethod)="filterCodes($event)" 
-          field="code"
-          [dropdown]="true"
-          [forceSelection]="true"
-          class="form-control form-control-lg"
-          placeholder="Seleccione un código de producto"
-        ></p-autoComplete>
-      </div>
-    </div>
-  
-    <!-- Información del producto -->
-    <div class="row mb-4">
-      <div class="col-md-12 text-center">
-        <h3 class="text-primary">{{ productName }}</h3>
-        <p class="fs-5">Cantidad Total en Inventario: <strong>{{ totalInventory }}</strong></p>
-        <p class="fs-5">Fecha de la Última Compra: <strong>{{ lastPurchaseDate | date }}</strong></p>
-      </div>
-    </div>
-  
-    <!-- Tabla de Proveedores -->
-    <div class="row mb-4">
-      <div class="col-md-12">
-        <h4 class="text-secondary mb-3">Proveedores Recientes</h4>
-        <p-table [value]="recentSuppliers" class="p-datatable-sm p-datatable-gridlines">
+  <!-- Pestañas para Historial General y Historial por Producto -->
+  <p-tabView>
+    
+    <!-- Pestaña Historial General -->
+    <p-tabPanel header="Historial General">
+      <div class="card">
+        <p-toast></p-toast>
+        <p-toolbar styleClass="mb-4 gap-2">
+          <ng-template pTemplate="left">
+            <p-button
+              severity="success"
+              label="Agregar Registro"
+              icon="pi pi-plus"
+              class="mr-2"
+              (onClick)="openNew()"
+            />
+          </ng-template>
+
+          <ng-template pTemplate="right">
+            <p-button
+              severity="danger"
+              icon="pi pi-filter-slash"
+              label="Borrar filtros"
+              (onClick)="clear(dt)"
+            />
+          </ng-template>
+        </p-toolbar>
+
+        <p-table
+          #dt
+          [value]="purchaseHistory"
+          dataKey="id"
+          [rows]="10"
+          [rowHover]="true"
+          [showCurrentPageReport]="true"
+          [rowsPerPageOptions]="[10, 25, 50]"
+          [loading]="loading"
+          [paginator]="true"
+          currentPageReportTemplate="Mostrando desde {first} hasta {last} de {totalRecords} registros"
+          [globalFilterFields]="['product', 'supplier', 'unit_cost_price', 'unit_sales_price']"
+          [filterDelay]="0"
+          [tableStyle]="{ 'min-width': '75rem' }"
+        >
+          <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+              <h5 class="m-0">Historial de Compras General</h5>
+              <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="searchValue"
+                  (input)="dt.filterGlobal(searchValue, 'contains')"
+                  placeholder="Buscar Historial"
+                />
+              </span>
+            </div>
+          </ng-template>
           <ng-template pTemplate="header">
             <tr>
-              <th>Proveedor</th>
-              <th>Costo</th>
-              <th>Fecha de Última Compra</th>
-              <th>Dirección</th>
-              <th>Teléfono</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-supplier>
-            <tr>
-              <td>{{ supplier.name }}</td>
-              <td>{{ supplier.cost | currency }}</td>
-              <td>{{ supplier.lastPurchase | date }}</td>
-              <td>{{ supplier.address }}</td>
-              <td>{{ supplier.phone }}</td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </div>
-    </div>
-  
-    <!-- Historial de Compras -->
-    <div class="row">
-      <div class="col-md-12">
-        <h4 class="text-secondary mb-3">Historial de Compras</h4>
-        <p-table [value]="purchaseHistory" [paginator]="true" [rows]="10" [globalFilterFields]="['supplier', 'cost']" class="p-datatable-sm p-datatable-gridlines">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Proveedor</th>
-              <th>Costo</th>
-              <th>Fecha de Compra</th>
-              <th>Dirección</th>
-              <th>Teléfono</th>
+              <th pSortableColumn="product">Producto <p-sortIcon field="product" /></th>
+              <th pSortableColumn="supplier">Proveedor <p-sortIcon field="supplier" /></th>
+              <th pSortableColumn="unit_cost_price">Costo Unitario <p-sortIcon field="unit_cost_price" /></th>
+              <th pSortableColumn="unit_sales_price">Precio de Venta <p-sortIcon field="unit_sales_price" /></th>
+              <th pSortableColumn="units_purchased">Unidades Compradas <p-sortIcon field="units_purchased" /></th>
+              <th pSortableColumn="date">Fecha <p-sortIcon field="date" /></th>
+              <th></th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-history>
             <tr>
-              <td>{{ history.supplier }}</td>
-              <td>{{ history.cost | currency }}</td>
-              <td>{{ history.purchaseDate | date }}</td>
-              <td>{{ history.address }}</td>
-              <td>{{ history.phone }}</td>
+              <td>{{ history.product.detail }} ({{ history.product.brand }})</td>
+              <td>{{ history.supplier.name }}</td>
+              <td>{{ history.unit_cost_price | currency }}</td>
+              <td>{{ history.unit_sales_price | currency }}</td>
+              <td>{{ history.units_purchased }}</td>
+              <td>{{ history.date | date }}</td>
+              <td>
+                <p-button
+                  icon="pi pi-pencil"
+                  class="mr-2"
+                  [rounded]="true"
+                  [outlined]="true"
+                  severity="success"
+                  (onClick)="editHistory(history)"
+                />
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [rounded]="true"
+                  [outlined]="true"
+                  (onClick)="deleteHistory(history.id)"
+                />
+              </td>
             </tr>
           </ng-template>
-          <ng-template pTemplate="globalFilter" let-filter>
-            <input pInputText type="text" (input)="filter($event)" placeholder="Filtrar por proveedor" class="form-control">
+          <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+              En total hay {{ purchaseHistory.length }} registros.
+            </div>
           </ng-template>
         </p-table>
+
+        <p-dialog
+          [(visible)]="historyDialog"
+          [style]="{ width: '450px' }"
+          header="Detalles del Historial de Compras"
+          [modal]="true"
+          styleClass="p-fluid"
+        >
+          <ng-template pTemplate="content">
+            <div class="field">
+              <label for="date">Fecha de Compra</label>
+              <p-calendar [(ngModel)]="selectedHistory.date" dateFormat="yy-mm-dd"></p-calendar>
+            </div>
+            <div class="field">
+              <label for="product">Producto</label>
+              <p-dropdown 
+                [(ngModel)]="selectedProduct" 
+                [options]="productList" 
+                optionLabel="detail" 
+                placeholder="Seleccione un producto"
+              ></p-dropdown>
+            </div>
+
+            <div class="field">
+              <label for="supplier">Proveedor</label>
+              <p-dropdown 
+                [(ngModel)]="selectedSupplier" 
+                [options]="supplierList" 
+                optionLabel="name" 
+                placeholder="Seleccione un proveedor"
+              ></p-dropdown>
+            </div>
+
+            <div class="field">
+              <label for="unitCostPrice">Costo Unitario</label>
+              <input type="number" pInputText [(ngModel)]="selectedHistory.unit_cost_price">
+            </div>
+
+            <div class="field">
+              <label for="unitSalesPrice">Precio de Venta</label>
+              <input type="number" pInputText [(ngModel)]="selectedHistory.unit_sales_price">
+            </div>
+
+            <div class="field">
+              <label for="unitsPurchased">Unidades Compradas</label>
+              <input type="number" pInputText [(ngModel)]="selectedHistory.units_purchased">
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="footer">
+            <p-button
+              label="Cancelar"
+              icon="pi pi-times"
+              [text]="true"
+              (onClick)="hideDialog()"
+            />
+            <p-button
+              label="Guardar"
+              icon="pi pi-check"
+              [text]="true"
+              (onClick)="saveHistory()"
+            />
+          </ng-template>
+        </p-dialog>
+
+        <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
       </div>
-    </div>
-  </div>
-  
+    </p-tabPanel>
+
+    <!-- Pestaña Historial por Producto (mantener estructura actual) -->
+    <p-tabPanel header="Historial por Producto">
+      <!-- Selección del Producto -->
+      <div class="row justify-content-center mb-4">
+        <div class="col-md-12 text-center">
+          <label for="productCode" class="form-label fs-4 col-md-12">Código del Producto</label>
+          <p-dropdown
+            class="col-md-12"
+            id="productCode"
+            [options]="productList" 
+            [(ngModel)]="selectedCode" 
+            optionLabel="code"
+            placeholder="Seleccione un producto" />
+        </div>
+      </div>
+
+      <!-- Información del Producto -->
+      <div class="row mb-4">
+        <div class="col-md-12 text-center">
+          <h3 class="text-primary">{{ productName }}</h3>
+          <p class="fs-5">Cantidad Total en Inventario: <strong>{{ totalInventory }}</strong></p>
+          <p class="fs-5">Fecha de la Última Compra: <strong>{{ lastPurchaseDate | date }}</strong></p>
+        </div>
+      </div>
+
+      <!-- Tabla de Proveedores Recientes -->
+      <div class="row mb-4">
+        <div class="col-md-12">
+          <h4 class="text-secondary mb-3">Proveedores Recientes</h4>
+          <p-table [value]="recentSuppliers" class="p-datatable-sm p-datatable-gridlines">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Proveedor</th>
+                <th>Costo</th>
+                <th>Fecha de Última Compra</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-supplier>
+              <tr>
+                <td>{{ supplier.name }}</td>
+                <td>{{ supplier.cost | currency }}</td>
+                <td>{{ supplier.lastPurchase | date }}</td>
+                <td>{{ supplier.address }}</td>
+                <td>{{ supplier.phone }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+
+      <!-- Historial de Compras por Producto -->
+      <div class="row">
+        <div class="col-md-12">
+          <h4 class="text-secondary mb-3">Historial de Compras del Producto</h4>
+          <p-table [value]="productPurchaseHistory" [paginator]="true" [rows]="10" class="p-datatable-sm p-datatable-gridlines">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Proveedor</th>
+                <th>Costo</th>
+                <th>Fecha de Compra</th>
+                <th>Unidades Compradas</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-history>
+              <tr>
+                <td>{{ history.supplier.name }}</td>
+                <td>{{ history.unit_cost_price | currency }}</td>
+                <td>{{ history.date | date }}</td>
+                <td>{{ history.units_purchased }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
+</div>

@@ -27,6 +27,7 @@ import { roleGuard } from './guards/role.guard';
 import { AdminPurchaseControlComponent } from './pages/admin/admin-purchase-control/admin-purchase-control.component';
 import { PublicContactUsComponent } from './pages/public/public-contact-us/public-contact-us.component';
 import { UserProductComponent } from './pages/user/user-product/user-product.component';
+import { AdminSupliersComponent } from './pages/admin/admin-supliers/admin-supliers.component';
 
 export const routes: Routes = [
   {
@@ -150,6 +151,11 @@ export const routes: Routes = [
         path: 'configuracion',
         component: AdminSettingsComponent,
         title: 'Configuración - Admin',
+      },
+      {
+        path: 'proveedores',
+        component: AdminSupliersComponent,
+        title: 'Proveedores - Admin',
       },
       { path: '', redirectTo: '', pathMatch: 'prefix' },
     ],

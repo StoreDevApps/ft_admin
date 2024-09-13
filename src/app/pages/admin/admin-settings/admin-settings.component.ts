@@ -55,6 +55,14 @@ export class AdminSettingsComponent {
   submitNewService: boolean = false;
   updateService: boolean = false;
 
+  profile = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: ''
+  };
+  submitted = false;
+
   constructor(
     private publicService: PublicService,
     private messageService: MessageService,
@@ -345,6 +353,17 @@ export class AdminSettingsComponent {
             console.error('Error loading services:', error);
           },
         });
+    }
+  }
+
+  saveProfile() {
+    this.submitted = true;
+    if (this.profile.firstName && this.profile.lastName && this.profile.email && this.profile.phone) {
+      // Lógica para guardar los cambios del perfil, puede incluir una llamada al backend
+      console.log('Perfil guardado:', this.profile);
+    } else {
+      // Manejar errores de validación
+      console.log('Por favor, complete todos los campos.');
     }
   }
 }

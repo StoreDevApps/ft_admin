@@ -117,6 +117,109 @@
         </div>
       </ng-template>
     </p-tabPanel>
+
+    <!-- Tab para Editar Perfil -->
+    <p-tabPanel header="Editar Perfil">
+      <ng-template pTemplate="content">
+        <div class="container px-5">
+          <!-- Sección del formulario -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <div class="field mb-4">
+                <label for="firstName" class="form-label">Nombre</label>
+                <input
+                  type="text"
+                  pInputText
+                  id="firstName"
+                  [(ngModel)]="profile.firstName"
+                  placeholder="Ingrese su nombre"
+                  required
+                  autofocus
+                  class="p-inputtext-lg p-d-block"
+                  style="width: 100%;"
+                />
+                <small *ngIf="submitted && !profile.firstName" class="p-error">
+                  El nombre es requerido.
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="field mb-4">
+                <label for="lastName" class="form-label">Apellido</label>
+                <input
+                  type="text"
+                  pInputText
+                  id="lastName"
+                  [(ngModel)]="profile.lastName"
+                  placeholder="Ingrese su apellido"
+                  required
+                  class="p-inputtext-lg p-d-block"
+                  style="width: 100%;"
+                />
+                <small *ngIf="submitted && !profile.lastName" class="p-error">
+                  El apellido es requerido.
+                </small>
+              </div>
+            </div>
+          </div>
+    
+          <!-- Sección de correo y teléfono -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <div class="field mb-4">
+                <label for="email" class="form-label">Correo electrónico</label>
+                <input
+                  type="email"
+                  pInputText
+                  id="email"
+                  [(ngModel)]="profile.email"
+                  placeholder="Ingrese su correo electrónico"
+                  required
+                  class="p-inputtext-lg p-d-block"
+                  style="width: 100%;"
+                />
+                <small *ngIf="submitted && !profile.email" class="p-error">
+                  El correo es requerido.
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="field mb-4">
+                <label for="phone" class="form-label">Teléfono</label>
+                <input
+                  type="text"
+                  pInputText
+                  id="phone"
+                  [(ngModel)]="profile.phone"
+                  placeholder="Ingrese su número de teléfono"
+                  required
+                  class="p-inputtext-lg p-d-block"
+                  style="width: 100%;"
+                />
+                <small *ngIf="submitted && !profile.phone" class="p-error">
+                  El teléfono es requerido.
+                </small>
+              </div>
+            </div>
+          </div>
+    
+          <!-- Botón de guardar -->
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <button
+                pButton
+                type="button"
+                label="Guardar cambios"
+                class="p-button-success p-button-lg"
+                (click)="saveProfile()"
+                style="width: 200px; margin-top: 20px;"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-tabPanel>
+    
   </p-tabView>
 
   <p-dialog

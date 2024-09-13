@@ -5,7 +5,7 @@
       </a>
     </div>
     <div class="sidebar-user">
-      <p>Juan Perez</p>
+      <a>Hola, {{ userName }}</a>
     </div>
     <nav class="sidebar-menu">
       <ul>
@@ -13,6 +13,7 @@
         <li><a [routerLink]="['/admin/control-ventas']">Control de ventas</a></li>
         <li><a [routerLink]="['/admin/inventario']">Inventario</a></li>
         <li><a [routerLink]="['/admin/trabajadores']">Trabajadores</a></li>
+        <li><a [routerLink]="['/admin/proveedores']">Proveedores</a></li>
         <li><a [routerLink]="['/admin/configuracion']">Configuración</a></li>
       </ul>
     </nav>
