@@ -174,5 +174,10 @@ export class AdminService {
       body: { id: suplierId },});
   }
 
+  updateUserProfile(profile: any): Observable<any> {
+    return this.http.put<any>(`${this.base_url}api/user/update-profile/`, profile);
+}
+
+
 
 }
