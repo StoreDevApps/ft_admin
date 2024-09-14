@@ -1,0 +1,211 @@
+<div class="card">
+    <p-toast></p-toast>
+    <p-toolbar styleClass="mb-4 gap-2">
+      <ng-template pTemplate="left">
+        <p-button
+          severity="success"
+          label="Agregar proveedor"
+          icon="pi pi-plus"
+          class="mr-2"
+          (onClick)="openNew()"
+        />
+      </ng-template>
+  
+      <ng-template pTemplate="right">
+        <p-button
+          severity="danger"
+          icon="pi pi-filter-slash"
+          label="Borrar filtros"
+          (onClick)="clear(dt)"
+        />
+      </ng-template>
+    </p-toolbar>
+  
+    <p-table
+      #dt
+      [value]="supliers"
+      dataKey="id"
+      [rows]="10"
+      [rowHover]="true"
+      [showCurrentPageReport]="true"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [loading]="loading"
+      [paginator]="true"
+      currentPageReportTemplate="Mostrando desde {first} hasta {last} de {totalRecords} registros"
+      [globalFilterFields]="['name', 'email', 'phone_number', 'direction']"
+      [filterDelay]="0"
+      [tableStyle]="{ 'min-width': '75rem' }"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+          <h5 class="m-0">Listado de Proveedores</h5>
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              [(ngModel)]="searchValue"
+              (input)="dt.filterGlobal(searchValue, 'contains')"
+              placeholder="Buscar Proveedor"
+            />
+          </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="name" style="min-width: 14rem">
+            <div class="flex justify-content-between align-items-center">
+              Nombre
+              <p-sortIcon field="name" />
+            </div>
+          </th>
+          <th pSortableColumn="email" style="min-width: 14rem">
+            <div class="flex justify-content-between align-items-center">
+              Correo Electrónico
+              <p-sortIcon field="email" />
+            </div>
+          </th>
+          <th pSortableColumn="phone_number" style="min-width: 14rem">
+            <div class="flex justify-content-between align-items-center">
+              Teléfono
+              <p-sortIcon field="phone_number" />
+            </div>
+          </th>
+          <th pSortableColumn="direction" style="min-width: 14rem">
+            <div class="flex justify-content-between align-items-center">
+              Dirección
+              <p-sortIcon field="direction" />
+            </div>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-suplier>
+        <tr>
+          <td>
+            <span class="p-column-title">Nombre</span>
+            {{ suplier.name }}
+          </td>
+          <td>
+            <span class="p-column-title">Correo Electrónico</span>
+            {{ suplier.email }}
+          </td>
+          <td>
+            <span class="p-column-title">Teléfono</span>
+            {{ suplier.phone_number }}
+          </td>
+          <td>
+            <span class="p-column-title">Dirección</span>
+            {{ suplier.direction }}
+          </td>
+          <td>
+            <p-button
+              icon="pi pi-pencil"
+              class="mr-2"
+              [rounded]="true"
+              [outlined]="true"
+              severity="success"
+              (onClick)="editSuplier(suplier)"
+            />
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              [rounded]="true"
+              [outlined]="true"
+              (onClick)="deleteSuplier(suplier.id)"
+            />
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+          En total hay {{ supliers ? supliers.length : 0 }} proveedores.
+        </div>
+      </ng-template>
+    </p-table>
+  
+    <p-dialog
+      [(visible)]="suplierDialog"
+      [style]="{ width: '450px' }"
+      header="Detalles del Proveedor"
+      [modal]="true"
+      styleClass="p-fluid"
+    >
+      <ng-template pTemplate="content">
+        <div class="field">
+          <label for="name">Nombre</label>
+          <input
+            type="text"
+            pInputText
+            id="name"
+            [(ngModel)]="suplier.name"
+            required
+            autofocus
+          />
+          <small class="p-error" *ngIf="submitted && !suplier.name">
+            El nombre es requerido
+          </small>
+        </div>
+  
+        <div class="field">
+          <label for="email">Correo Electrónico</label>
+          <input
+            type="email"
+            pInputText
+            id="email"
+            [(ngModel)]="suplier.email"
+            required
+          />
+          <small class="p-error" *ngIf="submitted && !suplier.email">
+            El correo es requerido
+          </small>
+        </div>
+  
+        <div class="field">
+          <label for="phone_number">Teléfono</label>
+          <input
+            type="text"
+            pInputText
+            id="phone_number"
+            [(ngModel)]="suplier.phone_number"
+            required
+          />
+          <small class="p-error" *ngIf="submitted && !suplier.phone_number">
+            El teléfono es requerido
+          </small>
+        </div>
+  
+        <div class="field">
+          <label for="direction">Dirección</label>
+          <input
+            type="text"
+            pInputText
+            id="direction"
+            [(ngModel)]="suplier.direction"
+            required
+          />
+          <small class="p-error" *ngIf="submitted && !suplier.direction">
+            La dirección es requerida
+          </small>
+        </div>
+      </ng-template>
+  
+      <ng-template pTemplate="footer">
+        <p-button
+          label="Cancelar"
+          icon="pi pi-times"
+          [text]="true"
+          (onClick)="hideDialog()"
+        />
+        <p-button
+          label="Guardar"
+          icon="pi pi-check"
+          [text]="true"
+          (onClick)="saveSuplier()"
+        />
+      </ng-template>
+    </p-dialog>
+  
+    <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+  </div>
+  

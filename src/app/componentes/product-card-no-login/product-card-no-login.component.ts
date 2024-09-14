@@ -1,14 +1,20 @@
 import { Component, Input } from '@angular/core';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-product-card-no-login',
   standalone: true,
-  imports: [],
+  imports: [SkeletonModule],
   templateUrl: './product-card-no-login.component.html',
   styleUrl: './product-card-no-login.component.scss'
 })
 export class ProductCardNoLoginComponent {
-  @Input() product: { id: number, detail: string, url: string } = { id: 0, detail: 'Lapiz 2B', url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS11G0DkaNJ6HAPJ4sTAaHXJjJAcUVbCaHFew&s' };
+  @Input() product: any = {};
+
+  ngOnInit() {
+    console.log(this.product);
+    this.product['image'] = this.product['images'][0];
+  }
 
   onCardClick() {
     console.log(this.product);

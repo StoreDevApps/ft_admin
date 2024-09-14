@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import {
   HttpClient,
   HttpHeaders,
@@ -46,12 +46,30 @@ export class AuthService {
    * Cierra la sesión del usuario.
    */
   logout(): void {
+    const refreshToken = localStorage.getItem('refresh_token');
+    if (refreshToken) {
+        this.http.post<any>(`${this.base_url}api/logout/`, { refresh: refreshToken })
+            .subscribe({
+                next: () => {
+                    this.clearTokensAndNavigate();
+                },
+                error: (err) => {
+                    console.error('Error al intentar añadir el token a la lista negra', err);
+                    this.clearTokensAndNavigate();
+                }
+            });
+    } else {
+        this.clearTokensAndNavigate();
+    }
+}
+
+private clearTokensAndNavigate(): void {
     this.accessToken = null;
     this.refreshToken = null;
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     this.router.navigate(['/login']);
-  }
+}
 
   /**
    * Verifica si el usuario está autenticado.

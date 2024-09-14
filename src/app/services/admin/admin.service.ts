@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -154,5 +154,30 @@ export class AdminService {
   deleteImageProduct(productId: number, imageUrl: string): Observable<any> {
     return this.http.delete(`${this.base_url}api/products/${productId}/images/`, { body: { url: imageUrl } });
   }
+  
+  getSupliers(): Observable<any> {
+    return this.http.get<any>(`${this.base_url}api/admin/supliers/`);
+  }
+
+  saveSuplier(suplier: any): Observable<any> {
+    if (suplier.id) {
+      // Si el proveedor tiene un id, actualizamos
+      return this.http.put<any>(`${this.base_url}api/admin/supliers/`, suplier);
+    } else {
+      // Si no tiene id, lo creamos
+      return this.http.post<any>(`${this.base_url}api/admin/supliers/`, suplier);
+    }
+  }
+
+  deleteSuplier(suplierId: number): Observable<any> {
+    return this.http.delete<any>(`${this.base_url}api/admin/supliers/`, {
+      body: { id: suplierId },});
+  }
+
+  updateUserProfile(profile: any): Observable<any> {
+    return this.http.put<any>(`${this.base_url}api/user/update-profile/`, profile);
+}
+
+
 
 }

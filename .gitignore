@@ -43,3 +43,5 @@ Thumbs.db
 
 # Ignorar archivos de configuración de VS Code
 *.code-workspace
+# Local Netlify folder
+.netlify

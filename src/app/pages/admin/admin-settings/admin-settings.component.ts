@@ -55,6 +55,14 @@ export class AdminSettingsComponent {
   submitNewService: boolean = false;
   updateService: boolean = false;
 
+  profile = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+  };
+  submitted = false;
+
   constructor(
     private publicService: PublicService,
     private messageService: MessageService,
@@ -345,6 +353,52 @@ export class AdminSettingsComponent {
             console.error('Error loading services:', error);
           },
         });
+    }
+  }
+
+  saveProfile() {
+    this.submitted = true;
+
+    // Verifica si todos los campos están completos
+    if (
+      this.profile.firstName &&
+      this.profile.lastName &&
+      this.profile.email &&
+      this.profile.phone
+    ) {
+      const updatedProfile = {
+        name: this.profile.firstName,
+        last_name: this.profile.lastName,
+        email: this.profile.email,
+        phone_number: this.profile.phone,
+      };
+
+      this.adminservice.updateUserProfile(updatedProfile).subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Perfil actualizado',
+              detail: 'El perfil se ha actualizado correctamente.',
+            });
+          }
+        },
+        error: (error: any) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Ocurrió un error al actualizar el perfil.',
+          });
+          console.error('Error al actualizar el perfil:', error);
+        },
+      });
+    } else {
+      // Mostrar error si algún campo está vacío
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Campos incompletos',
+        detail: 'Por favor, complete todos los campos.',
+      });
     }
   }
 }
